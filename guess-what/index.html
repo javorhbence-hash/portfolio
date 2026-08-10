@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guess what - the client was thinking | YLB</title>
+<meta name="description" content="Tizenkét mondat, amit ügyfelektől hallottál. Mire gondoltak valójában? Néha a rutin segít, néha csak a mázli.">
+
+<!-- ========== OPEN GRAPH - a LinkedIn preview ezen áll vagy bukik ========== -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luckybastard.hu/guess-what/">
+<meta property="og:title" content="Guess what the client was thinking">
+<meta property="og:description" content="12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.">
+<meta property="og:image" content="https://luckybastard.hu/guess-what/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="hu_HU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guess what the client was thinking">
+<meta name="twitter:description" content="12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.">
+<meta name="twitter:image" content="https://luckybastard.hu/guess-what/assets/og.png">
+<link rel="icon" href="assets/favicon.png">
+
+<!-- ==========================================================
+     ANALYTICS - ide kerül a mérőkód.
+     Plausible (nem sütizik, nem kell cookie banner):
+       <script defer data-domain="luckybastard.hu" src="https://plausible.io/js/script.tagged-events.js"></script>
+     GA4: ingyenes, de sütizik, tehát cookie banner kell hozzá.
+     A track() függvény mindkettőt kiszolgálja, lásd a szkript alján.
+     ========================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* ---- YLB arculati konstansok ---- */
+  --cream:#F5F0E8;
+  --ink:#1A1A18;
+  --terracotta:#C4472A;
+
+  /* ---- edition accent - a következő edition-ben ez a két sor változik ---- */
+  --accent:var(--terracotta);
+  --accent-lift:#DD6440;   /* ugyanaz a szín, fekete háttérre világosítva */
+
+  --font-brand:'Playfair Display',Georgia,serif;
+  --font-ui:'Jost',system-ui,sans-serif;
+
+  --maxw:560px;
+
+  /* ---- 8px-es térköz skála ---- */
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s6:48px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--cream);color:var(--ink);}
+body{
+  font-family:var(--font-ui);font-weight:300;
+  line-height:1.55;
+  padding:28px 20px calc(40px + env(safe-area-inset-bottom));
+  display:flex;justify-content:center;
+  min-height:100dvh;
+  transition:background .5s ease,color .5s ease;
+}
+.wrap{width:100%;max-width:var(--maxw);}
+
+/* ============================================================
+   FORDÍTOTT MÓD - a landing krém, a játék fekete.
+   A "Kezdjük" gomb átfordítja a világot: beléptél valakinek a fejébe.
+   ============================================================ */
+html.dark,body.dark{background:var(--ink);color:var(--cream);}
+body.dark .subtitle em,
+body.dark .ask,
+body.dark .pub .mark,
+body.dark .reveal .meant{color:var(--accent-lift);}
+body.dark .rule,
+body.dark .reveal{border-color:rgba(245,240,232,.18);}
+body.dark .opt{border-color:rgba(245,240,232,.26);color:var(--cream);}
+body.dark .opt.miss{border-color:var(--accent-lift);color:var(--accent-lift);}
+body.dark .btn{background:var(--cream);color:var(--ink);}
+body.dark .btn:hover{background:var(--accent-lift);color:var(--cream);}
+body.dark .btn.ghost{background:none;color:var(--cream);border:1px solid rgba(245,240,232,.32);}
+body.dark .btn.ghost:hover{background:var(--cream);color:var(--ink);}
+
+/* ================= LOCKUP ================= */
+.lockup{text-align:center;}
+
+/* a kiadói jel - Playfair, vékony vonalak között */
+.pub{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin-bottom:var(--s4);
+}
+.pub span{
+  font-family:var(--font-brand);font-weight:900;
+  font-size:14px;letter-spacing:.3em;text-indent:.3em;
+}
+/* a szimbólum viszi a színt, nem a betűszó.
+   Ha mégis a teljes YLB legyen terracotta: tedd a color-t a .pub span-re. */
+.pub .mark{color:var(--accent);font-size:15px;font-style:normal;}
+.pub::before,.pub::after{
+  content:'';height:1px;width:38px;background:currentColor;opacity:.22;
+}
+
+/* a cím - a Playfair 900 viszi, ez az YLB hang */
+.title{
+  font-family:var(--font-brand);font-weight:900;
+  font-size:clamp(60px,21vw,128px);
+  line-height:.82;
+  letter-spacing:-.02em;
+}
+.title span{display:block;}
+
+/* az alcím ellenpontoz: apró, ritkított, verzál */
+.subtitle{
+  margin-top:var(--s3);
+  font-weight:300;text-transform:uppercase;
+  font-size:clamp(11px,3.2vw,14px);
+  letter-spacing:.28em;text-indent:.28em;
+}
+.subtitle em{font-style:normal;color:var(--accent);font-weight:500;}
+
+@media(min-width:520px){
+  .title span{display:inline;}
+  .title span+span::before{content:' ';}
+}
+
+/* ================= HERO ILLUSZTRÁCIÓ =================
+   A rajz nagyon álló formátumú (700x1254). Ha csak szélességre
+   korlátoznánk, mobilon 600px magas lenne és lelökné a képernyőről
+   az egész lockupot. Ezért MAGASSÁGRA is limitálva van: így a hajtás
+   fölött elfér a teljes fejléc + a teljes illusztráció, a szöveg pedig
+   épp csak beles alulról - ez hívja a görgetést. */
+.hero{margin:var(--s4) auto 0;text-align:center;}
+.hero img{
+  display:block;margin:0 auto;
+  max-width:340px;
+  max-height:min(56svh,608px);
+  width:auto;height:auto;
+}
+.hero .placeholder{
+  border:1px dashed rgba(26,26,24,.22);
+  width:min(340px,56svh*0.558);aspect-ratio:700/1254;margin:0 auto;
+  max-height:min(56svh,608px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.35;
+  text-align:center;padding:20px;
+}
+
+/* ================= SZÖVEGBLOKKOK ================= */
+.intro{margin-top:var(--s4);font-size:15.5px;text-align:center;}
+.intro p:last-child{margin-bottom:0;}
+/* a felütés kérdése - italic Playfair, accent színben */
+.ask{
+  font-family:var(--font-brand);font-weight:900;font-style:italic;
+  font-size:clamp(22px,6.2vw,28px);line-height:1.2;
+  color:var(--accent);
+  margin:0 0 var(--s3);
+}
+.rule{
+  margin-top:var(--s2);text-align:center;
+  font-size:12.5px;letter-spacing:.04em;opacity:.5;
+}
+
+/* ================= GOMBOK ================= */
+.btn{
+  display:block;width:100%;margin-top:var(--s4);
+  background:var(--ink);color:var(--cream);
+  font-family:var(--font-ui);font-weight:400;font-size:14px;
+  letter-spacing:.2em;text-indent:.2em;text-transform:uppercase;
+  border:none;padding:17px 20px;cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+  text-align:center;text-decoration:none;
+}
+.btn:hover{background:var(--accent);}
+.btn:active{transform:scale(.99);}
+.btn.ghost{
+  background:none;color:var(--ink);
+  border:1px solid rgba(26,26,24,.28);
+  margin-top:var(--s2);
+}
+.btn.ghost:hover{background:var(--ink);color:var(--cream);}
+
+/* ================= LÓHERE PROGRESS ================= */
+.clovers{
+  display:flex;justify-content:center;gap:26px;
+  margin-bottom:var(--s6);
+}
+.clover{position:relative;width:46px;height:46px;}
+.leaf{
+  position:absolute;left:50%;bottom:50%;
+  width:19px;height:21px;margin-left:-9.5px;
+  transform-origin:50% 100%;
+  transform:rotate(var(--rot));
+  /* meg nem szerzett: halvány, kihúzott olíva - alig több mint vázlat */
+  color:#8A9470;opacity:.32;
+  transition:opacity .4s ease,color .4s ease;
+}
+.leaf[data-i="0"]{--rot:45deg;}
+.leaf[data-i="1"]{--rot:135deg;}
+.leaf[data-i="2"]{--rot:225deg;}
+.leaf[data-i="3"]{--rot:315deg;}
+/* megszerzett: élő zöld, ami feketén tényleg világít */
+.leaf.on{opacity:1;color:#6FA04B;}
+body.dark .leaf.on{color:#8FC565;}
+.leaf.land{animation:leafLand .52s cubic-bezier(.34,1.56,.64,1) both;}
+/* Győzelemkor MIND A TIZENKETTŐ felragyog - zölden.
+   A 12. levél korábban terracottára váltott, de a játékos szemében a
+   piros a hibát jelenti: pont a győzelem pillanatában hitte azt, hogy
+   rontott. A márkajel-easter egg nem ér annyit. */
+.leaf.glow{animation:finalGlow .5s ease;}
+.leaf img,.leaf svg{width:100%;height:100%;display:block;}
+
+.counter{
+  text-align:center;font-size:11px;letter-spacing:.24em;text-indent:.24em;
+  text-transform:uppercase;opacity:.4;margin-bottom:var(--s1);
+}
+
+/* ================= KÉRDÉS =================
+   Ez a játék screenshotolható pillanata - itt van a legnagyobb lépték.
+   Dőlt, mert idézet: valaki kimondta. Rímel a landing felütő kérdésére. */
+.quote{
+  font-family:var(--font-brand);font-weight:900;font-style:italic;
+  font-size:clamp(34px,10vw,48px);line-height:1.1;
+  text-align:center;
+  letter-spacing:-.005em;
+}
+/* az idézőjelek terracottában - szín az írásjelen, nem a szón:
+   ez mondja, hogy valaki BESZÉL, anélkül hogy a tartalmat színezné */
+.quote q{quotes:none;}
+.quote .qm{color:var(--accent);font-style:normal;}
+body.dark .quote .qm{color:var(--accent-lift);}
+
+/* ================= FAIL / WIN ================= */
+.verdict{text-align:center;}
+.verdict .big{
+  font-family:var(--font-brand);font-weight:900;
+  font-size:clamp(34px,11vw,52px);line-height:1;margin-bottom:var(--s4);
+}
+.reveal{
+  border-top:1px solid rgba(26,26,24,.14);
+  border-bottom:1px solid rgba(26,26,24,.14);
+  padding:var(--s3) 0;margin-bottom:var(--s4);text-align:left;
+}
+.reveal .lead{
+  font-size:11px;letter-spacing:.22em;text-indent:.22em;
+  text-transform:uppercase;opacity:.45;margin-bottom:var(--s1);
+}
+.reveal .said{font-family:var(--font-brand);font-weight:900;font-style:italic;font-size:20px;margin-bottom:var(--s2);}
+.reveal .said .qm{color:var(--accent-lift);font-style:normal;}
+.reveal .meant{font-size:16.5px;color:var(--accent);}
+.evalline{font-size:16px;margin-bottom:var(--s4);}
+
+/* lépcsőzetes érkezés a bukás- és nyerőképernyőn */
+.stag{animation:revealIn .32s ease both;}
+.stag:nth-child(1){animation-delay:0s;}
+.stag:nth-child(2){animation-delay:.08s;}
+.stag:nth-child(3){animation-delay:.16s;}
+.stag:nth-child(4){animation-delay:.24s;}
+.d5{animation:revealIn .32s ease .32s both;}
+
+/* ============================================================
+   A JÁTÉKKÉPERNYŐ KITÖLTI A VIEWPORTOT
+   A lóhere + idézet + kártyák EGY optikai blokk, ami együtt kerül
+   függőlegesen középre - nem három elem a képernyő három pontjához
+   szögezve. A felső és alsó rugó aránya 40/60, így a blokk súlypontja
+   ~45%-nál ül: ez az optikai közép, ami feloldja a "lefele billen"
+   érzést (a három kártya vizuálisan nehezebb, mint a szöveg).
+   ============================================================ */
+#s-game.live{
+  display:flex;flex-direction:column;
+  min-height:calc(100dvh - 68px - env(safe-area-inset-bottom));
+}
+/* a számláló a képernyő tetejére van rögzítve (order:-1),
+   a tartalmi blokk a két rugó közt lebeg */
+#s-game .counter{order:-1;margin-bottom:0;}
+#s-game::before{content:'';order:0;flex:40;}   /* felső rugó */
+#s-game::after{content:'';order:9;flex:60;}    /* alsó rugó - nehezebb, feljebb húz */
+#s-game .clovers{order:1;}
+#s-game .quote{order:2;margin:0 0 var(--s6);}
+#s-game .options{order:3;}
+#s-game .clovers,
+#s-game .quote,
+#s-game .options{flex-shrink:0;}
+
+/* ================= VÁLASZKÁRTYÁK ================= */
+.options{display:flex;flex-direction:column;gap:12px;}
+.opt{
+  background:none;border:1px solid rgba(26,26,24,.2);
+  font-family:var(--font-ui);font-weight:300;
+  font-size:clamp(15.5px,4.2vw,17px);line-height:1.45;
+  color:var(--ink);text-align:left;
+  padding:18px;min-height:74px;
+  display:flex;align-items:center;
+  cursor:pointer;
+  transition:border-color .16s ease,color .16s ease,opacity .16s ease,transform .1s ease;
+}
+/* A hover CSAK egérrel létező eszközön él.
+   Enélkül iOS/Android "beragasztja" a hovert az utoljára megérintett
+   pont alatti elemre - és mivel a következő kérdés kártyái ugyanoda
+   kerülnek, az egyik kártya vastagabb kerettel jelenik meg, mintha
+   sugallná a választ. Ez volt a jelentett bug. */
+@media (hover:hover) and (pointer:fine){
+  .opt:hover:not(:disabled){border-color:var(--ink);}
+  body.dark .opt:hover:not(:disabled){border-color:var(--cream);}
+}
+.opt:active:not(:disabled){transform:scale(.98);}
+.opt:disabled{cursor:default;}
+.opt.dead{opacity:.4;}
+/* az a/b/c betűk terracottában - három apró ütem a bal szélen,
+   ritmus a keret érintése nélkül */
+.opt .let{display:inline-block;min-width:22px;font-weight:400;color:var(--accent);}
+body.dark .opt .let{color:var(--accent-lift);}
+/* a rossz válasz egy ütemre megjelöli magát, csak utána jön a reveal */
+.opt.miss{border-color:var(--accent);color:var(--accent);animation:missShake .22s ease;}
+
+/* ================= ANIMÁCIÓK ================= */
+@keyframes leafLand{
+  0%{opacity:0;transform:translateY(-26px) scale(.55) rotate(var(--rot));}
+  55%{opacity:1;transform:translateY(5px) scale(1.14) rotate(var(--rot));}
+  100%{opacity:1;transform:translateY(0) scale(1) rotate(var(--rot));}
+}
+@keyframes missShake{
+  0%{transform:translateX(0);}
+  30%{transform:translateX(-5px);}
+  60%{transform:translateX(4px);}
+  100%{transform:translateX(0);}
+}
+@keyframes finalGlow{
+  0%{filter:brightness(1) drop-shadow(0 0 0 transparent);}
+  50%{filter:brightness(1.45) drop-shadow(0 0 10px currentColor);}
+  100%{filter:brightness(1) drop-shadow(0 0 0 transparent);}
+}
+@keyframes revealIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:none;}
+}
+@keyframes screenIn{
+  from{opacity:0;transform:translateY(6px);}
+  to{opacity:1;transform:none;}
+}
+
+.screen{display:none;}
+.screen.live{display:block;animation:screenIn .32s ease both;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ 1. LANDING ============ -->
+<section class="screen live" id="s-landing">
+  <div class="lockup">
+    <div class="pub"><span>YLB <i class="mark">&#x273D;</i></span></div>
+    <h1 class="title"><span>Guess</span><span>what</span></h1>
+    <p class="subtitle">the <em>client</em> was thinking</p>
+  </div>
+
+  <div class="hero">
+    <img src="assets/hero.png" alt="Fabábu ügyfél, feje fölött gondolatbuborékban céltábla, körülötte a falba fúródott nyilak"
+         onerror="this.remove();document.getElementById('heroPh').style.display='flex';">
+    <div class="placeholder" id="heroPh" style="display:none">hero illusztráció<br>assets/hero.png</div>
+  </div>
+
+  <div class="intro">
+    <p class="ask">Vajon mire gondolt az ügyfél?</p>
+    <p>Örök kérdés. Néha a rutin segít, néha az emberismeret, sokszor pedig a mázli. 12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Tedd próbára magad! Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.</p>
+  </div>
+
+  <button class="btn" id="startBtn">Kezdjük</button>
+</section>
+
+<!-- ============ 2. JÁTÉK ============ -->
+<section class="screen" id="s-game">
+  <div class="counter" id="counter">1 / 12</div>
+  <div class="clovers" id="clovers"></div>
+  <p class="quote" id="quote"></p>
+  <div class="options" id="options"></div>
+</section>
+
+<!-- ============ 3. BUKÁS ============ -->
+<section class="screen" id="s-fail">
+  <div class="verdict">
+    <p class="big">Nem.</p>
+    <div class="reveal">
+      <p class="lead stag">Amit mondott</p>
+      <p class="said stag" id="failSaid"></p>
+      <p class="lead stag">Amire gondolt</p>
+      <p class="meant stag" id="failMeant"></p>
+    </div>
+    <p class="evalline d5" id="failEval"></p>
+    <button class="btn" id="retryBtn">Újra elölről</button>
+    <button class="btn ghost" id="contBtn">Tovább innen</button>
+    <p class="rule">Innen már csak a poénokért. Az ebéd a hibátlan futamé.</p>
+  </div>
+</section>
+
+<!-- ============ 4. NYERÉS ============ -->
+<section class="screen" id="s-win">
+  <!-- HIBÁTLAN FUTAM - jár a jelentkezés -->
+  <div class="verdict" id="winClean">
+    <p class="big stag">12 / 12</p>
+    <div class="reveal" style="text-align:center">
+      <p class="stag" style="font-size:17px;margin-bottom:var(--s2);">Egyetlen hiba nélkül. Vagy tényleg ismered az ügyfeleket, vagy nagyon szerencsés vagy.</p>
+      <p class="stag" style="font-size:17px;color:var(--accent-lift);">Mindkettő jó hír.</p>
+    </div>
+    <p class="evalline d5">A jelentkezők közül egyet kisorsolok.<br>Hogy mikor, azt még én sem tudom.</p>
+    <a class="btn" id="claimBtn"
+       href="mailto:javor.h.bence@gmail.com?subject=Guess%20what%20-%2012%2F12&body=Megvan%20mind%20a%20tizenkett%C5%91%2C%20egy%20szuszra.%0A%0A">Jelentkezem az ebédre</a>
+    <button class="btn ghost" id="againBtn">Még egyszer</button>
+  </div>
+
+  <!-- NEM HIBÁTLAN - visszahívó, nem zsákutca -->
+  <div class="verdict" id="winDirty" style="display:none">
+    <p class="big stag">12 / 12</p>
+    <div class="reveal" style="text-align:center">
+      <p class="stag" style="font-size:17px;margin-bottom:var(--s2);">Megvan mind a tizenkettő. De nem egy szuszra.</p>
+      <p class="stag" style="font-size:17px;color:var(--accent-lift);">Most már tudod a válaszokat. Az nem ugyanaz, mint tudni az ügyfelet.</p>
+    </div>
+    <p class="evalline d5">Az ebédre az jelentkezhet, aki egyetlen hiba nélkül megy végig.</p>
+    <button class="btn" id="cleanBtn">Nekifutok tisztán</button>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   TARTALOM
+   A helyes válasz indexe: correct (0 = első opció)
+   A sorrend szándékosan kevert: a helyes válasz négyszer az első,
+   négyszer a második, négyszer a harmadik pozícióban van.
+   Kulcs: 2,1,1,0,2,1,2,0,1,0,2,0
+   ============================================================ */
+const Q = [
+
+  { said:"Érdekes.",
+    opts:["Tényleg érdekes.",
+          "Szar.",
+          "A harmadik irány negyedik digitális kiterjesztésénél elvesztettem a fonalat."],
+    correct:2 },
+
+  { said:"Legyen letisztult.",
+    opts:["Vegyétek ki azt, amitől izgalmas.",
+          "Kevesebb elem, több levegő.",
+          "Olcsó."],
+    correct:0 },
+
+  { said:"Hamarosan visszajelzünk.",
+    opts:["…De sajnos nem nyertetek.",
+          "Még nem mertem megmutatni a főnökömnek.",
+          "Ráérek szabi után is megírni."],
+    correct:1 },
+
+  { said:"A büdzsével most ne foglalkozzatok.",
+    opts:["Álmodjatok nagyot, aztán lealkuszom a felére.",
+          "Van rá keret bőven.",
+          "Én sem tudom, mennyim van rá."],
+    correct:0 },
+
+  { said:"Ti vagytok a szakértők.",
+    opts:["Tényleg fogalmam sincs, de bízom bennetek.",
+          "Oké, de ha nem lesz jó: „én megmondtam”.",
+          "Nem győztetek meg, de elfogytak az észérveim."],
+    correct:2 },
+
+  { said:"Nem jött át.",
+    opts:["Nem értettem.",
+          "Megmutattam otthon, és a feleségem nem értette.",
+          "Értettem. Csak nem tetszik."],
+    correct:1 },
+
+  { said:"Az kell, hogy üssön.",
+    opts:["Számok kellenek.",
+          "A barátaimnak is tetszenie kell.",
+          "Fogalmam sincs, mit akarok. De szólok, ha meglátom."],
+    correct:1 },
+
+  { said:"ASAP.",
+    opts:["Ma.",
+          "Nem sürgős. De így komolyabban hangzik.",
+          "Három hete kellett volna, csak most jutott eszembe."],
+    correct:2 },
+
+  { said:"Hoztok még egyet? Csak hogy lehessen választani.",
+    opts:["Végül úgyis egy harmadik irány lesz a nyerő.",
+          "Nem tudnám megmondani, mi nem tetszik.",
+          "Ezt igazából nem szeretem."],
+    correct:0 },
+
+  { said:"Ez nagyon bátor.",
+    opts:["De jónak nem jó.",
+          "Bárcsak a brand is ilyen bátor lenne.",
+          "A büdös életben nem fog átmenni a jogon."],
+    correct:1 },
+
+  { said:"Imádom.",
+    opts:["Semmi bajom vele.",
+          "Imádom, DE…",
+          "Imádom. És most rettegek, mert ezt nekem kell megvédenem odabent."],
+    correct:2 },
+
+  { said:"Tartsuk nyitva ezt az opciót.",
+    opts:["Nem akarom kimondani, hogy nem: mert akkor meg kell indokolnom.",
+          "Még gondolkodom rajta.",
+          "Nem."],
+    correct:0 }
+];
+
+/* ---- kiértékelő mondatok: hány helyes válasz jött össze a bukásig (0-11) ---- */
+const EVAL = [
+  /*  0 */ "0?? Itt az ideje egy chemistry meetingnek!",
+  /*  1 */ "Egyszer szívesen emlékszel majd ezekre a junior account évekre.",
+  /*  2 */ "Ajjaj. Valahol elbeszéltetek egymás mellett.",
+  /*  3 */ "Élesben a mázlidra inkább ne hagyatkozz.",
+  /*  4 */ "Tipp helyett inkább egy rövid call?",
+  /*  5 */ "Öt. Ezen a ponton szoktak új briefet írni.",
+  /*  6 */ "Pont a fele. És melyik felében bíztál jobban?",
+  /*  7 */ "Hét. Kezdesz gyanúsan jól olvasni a sorok között.",
+  /*  8 */ "Nyolc. Ezt már nem lehet mázlira fogni. Vagy mégis?",
+  /*  9 */ "Kilenc. Ennyivel már pitchet nyertek. Ebédet még nem.",
+  /* 10 */ "Igazi ügyfélsuttogó, vagy a szerencse fia vagy?",
+  /* 11 */ "Na jó. Valld be, hogy te is ügyfél vagy."
+];
+function evalLine(n){ return EVAL[n] || EVAL[0]; }
+
+/* ---- levél SVG (placeholder - cseréld assets/leaf.png-re) ----
+   A színt a CSS adja (currentColor), hogy a megszerzett levél élő zöld,
+   a meg nem szerzett halvány legyen - a szín ott jelenik meg, ahol a
+   haladást jelzi. Ez a fejléc egyetlen élő pontja. */
+const LEAF = '<svg viewBox="0 0 38 42" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+  + '<path d="M19 41 C19 30 2 27 2 14 C2 6 8 1 13 1 C16.5 1 18.5 3.5 19 6.5 C19.5 3.5 21.5 1 25 1 C30 1 36 6 36 14 C36 27 19 30 19 41 Z"'
+  + ' fill="currentColor" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>';
+
+/* ============================================================
+   JÁTÉKLOGIKA
+   ============================================================ */
+let idx = 0, busy = false;
+/* clean = ez a futam egy szuszra, hiba nélkül megy. Bármelyik rossz válasz
+   vagy a "Tovább innen" hamisra állítja. Minden futam a saját jogán számít,
+   ezért nem kell semmit tárolni - és nincs becsületalap sem. */
+let clean = true;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* a landing krém, minden más fekete - a váltást a body osztálya viszi */
+const DARK = ['s-game','s-fail','s-win'];
+
+function show(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('live'));
+  $(screen).classList.add('live');
+  const dark = DARK.includes(screen);
+  document.body.classList.toggle('dark', dark);
+  document.documentElement.classList.toggle('dark', dark);
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function buildClovers(){
+  const box = $('clovers'); box.innerHTML='';
+  for(let c=0;c<3;c++){
+    const cl = document.createElement('div');
+    cl.className='clover';
+    for(let l=0;l<4;l++){
+      const n = c*4+l;
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf' + (n===11?' final':'');
+      leaf.dataset.i = l;
+      leaf.dataset.n = n;
+      leaf.innerHTML = LEAF;
+      cl.appendChild(leaf);
+    }
+    box.appendChild(cl);
+  }
+}
+
+function paintClovers(){
+  document.querySelectorAll('.leaf').forEach(el=>{
+    el.classList.remove('land','glow');
+    el.classList.toggle('on', +el.dataset.n < idx);
+  });
+}
+
+function landLeaf(n){
+  const el = document.querySelector('.leaf[data-n="'+n+'"]');
+  if(!el) return;
+  el.classList.add('on','land');
+  setTimeout(()=>el.classList.remove('land'),540);
+}
+
+/* mind a 12 levél együtt ragyog fel, zölden - egyértelmű győzelem */
+function glowAll(){
+  document.querySelectorAll('.leaf').forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('glow'), i*22);
+  });
+}
+
+function render(){
+  const q = Q[idx];
+  $('counter').textContent = (idx+1)+' / 12';
+  /* az idézőjelek külön span-ben, terracottában (.qm) */
+  $('quote').innerHTML = '<span class="qm">„</span>'+esc(q.said)+'<span class="qm">”</span>';
+  const box = $('options'); box.innerHTML='';
+  q.opts.forEach((text,i)=>{
+    const b = document.createElement('button');
+    b.className='opt';
+    b.innerHTML = '<span class="let">'+'abc'[i]+'/</span>'+text;
+    b.onclick = ()=>answer(i,b);
+    box.appendChild(b);
+  });
+  paintClovers();
+  busy = false;
+}
+
+function answer(i, card){
+  if(busy) return;
+  busy = true;
+  const q = Q[idx];
+  const cards = document.querySelectorAll('.opt');
+  cards.forEach(c=>{ c.disabled = true; if(c!==card) c.classList.add('dead'); });
+
+  if(i === q.correct){
+    landLeaf(idx);
+    track('gw_pass',{q:idx+1});
+    idx++;
+    if(idx >= Q.length){
+      track('gw_win',{clean:clean?1:0});
+      $('winClean').style.display = clean ? '' : 'none';
+      $('winDirty').style.display = clean ? 'none' : '';
+      setTimeout(glowAll, 420);
+      setTimeout(()=>show('s-win'), 1150);
+    } else {
+      setTimeout(render, 560);
+    }
+  } else {
+    /* egy ütem, mielőtt jön a reveal - a rossz kártya megjelöli magát */
+    card.classList.add('miss');
+    clean = false;              /* ez a futam már nem ér ebédet */
+    track('gw_fail',{q:idx+1});
+    $('failSaid').innerHTML    = '<span class="qm">„</span>'+esc(q.said)+'<span class="qm">”</span>';
+    $('failMeant').textContent = q.opts[q.correct];
+    $('failEval').textContent  = evalLine(idx);
+    setTimeout(()=>{ show('s-fail'); busy=false; }, 620);
+  }
+}
+
+/* tiszta lappal: ez a futam még érhet ebédet */
+function start(){
+  idx = 0; busy = false; clean = true;
+  buildClovers();
+  render();
+  show('s-game');
+  track('gw_start');
+}
+
+/* "Tovább innen": a rontott kérdést átlépjük, a futam viszont
+   elveszíti a jogosultságát - a poénokért játszik tovább */
+function cont(){
+  idx++; busy = false; clean = false;
+  track('gw_continue',{q:idx});
+  if(idx >= Q.length){
+    $('winClean').style.display = 'none';
+    $('winDirty').style.display = '';
+    show('s-win');
+    return;
+  }
+  render();
+  show('s-game');
+}
+
+/* ============================================================
+   ANALYTICS
+   Egy helyen kezeli a Plausible-t és a GA4-et. Amelyik be van
+   kötve, az kapja az eseményt; ha egyik sincs, csendben elmegy.
+
+   gw_start  - elindult a játék
+   gw_pass   - helyes válasz  {q: kérdés sorszáma}
+   gw_fail   - bukás          {q: hányadiknál esett ki}
+   gw_win    - mind a 12 megvan
+   gw_claim  - rákattintott az "Írok" gombra
+   ============================================================ */
+function track(name, props){
+  props = props || {};
+  try{ if(window.plausible) window.plausible(name, {props:props}); }catch(e){}
+  try{ if(window.gtag) window.gtag('event', name, props); }catch(e){}
+  try{ (window.dataLayer=window.dataLayer||[]).push(Object.assign({event:name},props)); }catch(e){}
+}
+
+$('startBtn').onclick = start;
+$('retryBtn').onclick = start;
+$('againBtn').onclick = start;
+$('cleanBtn').onclick = start;
+$('contBtn').onclick  = cont;
+$('claimBtn').onclick = ()=>track('gw_claim');
+
+buildClovers();
+</script>
+</body>
+</html>
