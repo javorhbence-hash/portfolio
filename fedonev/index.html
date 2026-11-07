@@ -21,13 +21,21 @@
   *{box-sizing:border-box}
   body{margin:0;background:#2a2723;color:var(--ink);font-family:'Courier Prime',monospace;min-height:100vh}
   .wrap{max-width:480px;margin:0 auto;padding:10px 16px 48px}
-  .hero{text-align:center;min-height:calc(100vh - 20px);min-height:calc(100svh - 20px);display:flex;flex-direction:column;justify-content:space-between;padding:4px 0 calc(14px + env(safe-area-inset-bottom));box-sizing:border-box}
-  .hero h1{font-size:clamp(22px,6.6vw,28px);margin:6px 0 8px}
-  .hero .lead{margin:0 0 14px}
-  .fig{--fh:min(380px,46vh);--fh:min(380px,46svh);position:relative;height:var(--fh);width:calc(var(--fh)*2/3);margin:0 auto;flex:0 0 auto}
-  #pix{width:100%;height:100%;image-rendering:pixelated;display:block}
-  #tag{position:absolute;left:15%;top:56.7%;width:70%;height:16.7%;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P','Courier New',monospace;color:#1d1b18;transition:transform .3s}
-  .herotxt{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .hero{position:relative;height:100vh;height:100svh;margin:-10px -16px 0;overflow:hidden;background:#15171c}
+  .scene{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:0 0}
+  .scene .bg,.figimg{position:absolute;left:0;top:0;width:768px;height:1376px;image-rendering:pixelated;-webkit-user-select:none;user-select:none;pointer-events:none}
+  .figwrap{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:384px 1017px;transition:transform .45s ease}
+  .figwrap.sigh{transform:translateY(6px) rotate(-.6deg) scaleY(.99)}
+  #tag{position:absolute;left:226px;top:625px;width:316px;height:206px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P','Courier New',monospace;color:#1d1b18;text-align:center;line-height:1.3}
+  #tears{position:absolute;inset:0}
+  #tears i{position:absolute;width:6px;height:10px;background:#9fd6ff;border-radius:0 0 3px 3px}
+  .glow{position:absolute;left:96px;top:270px;width:130px;height:130px;border-radius:50%;background:radial-gradient(rgba(255,236,170,.35),rgba(255,236,170,0) 70%);animation:flick 4s infinite steps(1)}
+  @keyframes flick{0%,100%{opacity:1}47%{opacity:1}48%{opacity:.35}50%{opacity:1}52%{opacity:.5}53%{opacity:1}}
+  #rain{position:absolute;left:0;top:0;width:768px;height:1376px;pointer-events:none}
+  .crt{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(rgba(0,0,0,.16) 0 2px,transparent 2px 5px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
+  .herotxt{position:absolute;left:0;right:0;bottom:0;padding:40px 16px calc(16px + env(safe-area-inset-bottom));text-align:center;background:linear-gradient(rgba(21,23,28,0),rgba(21,23,28,.85) 40px,rgba(21,23,28,.92))}
+  .hero h1{font-size:clamp(21px,6.2vw,27px);margin:0 0 6px;line-height:1.12}
+  .hero .lead{font-size:14px;margin:0 0 12px;line-height:1.4}
   h1 span{color:#e05a4f;display:block}
   .cta{background:#b3261e;border-color:#b3261e;color:#fff;margin:0;padding:15px;font-size:18px}
   .hero+.form{margin-top:22px}
@@ -71,13 +79,23 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="hero">
-    <div class="fig"><canvas id="pix" width="200" height="300"></canvas><div id="tag"></div></div>
-    <div class="herotxt">
-    <h1>Ügynöknek lenni ciki. <span>Legalább a fedőneved ne legyen az.</span></h1>
-    <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.</p>
+  <div class="hero" id="hero">
+    <div class="scene" id="scene">
+      <img class="bg" src="bg.webp" alt="">
+      <div class="glow"></div>
+      <div class="figwrap" id="figwrap">
+        <img class="figimg" src="fig.webp" alt="Síró ügynök egy táblával">
+        <div id="tag"></div>
+        <div id="tears"></div>
+      </div>
+      <canvas id="rain"></canvas>
+      <div class="crt"></div>
     </div>
-    <button type="button" class="cta" id="cta">Kérem a fedőnevem</button>
+    <div class="herotxt">
+      <h1>Ügynöknek lenni ciki. <span>Legalább a fedőneved ne legyen az.</span></h1>
+      <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.</p>
+      <button type="button" class="cta" id="cta">Kérem a fedőnevem</button>
+    </div>
   </div>
 
   <form class="form" id="f">
@@ -434,52 +452,22 @@ $('share').addEventListener('click',async()=>{
 });
 
 (function(){
- const cv=$('pix');if(!cv)return;const c=cv.getContext('2d'),U=10;
- const px=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(Math.round(x*U),Math.round(y*U),Math.round(w*U),Math.round(h*U))};
- const names=['QUIZ','NANU-NANU','DÉVA','TANÁR','?'];let i=0,drop=0,sigh=0,tear=null,t0=performance.now();
- const rain=[];for(let k=0;k<16;k++)rain.push({x:Math.random()*20,y:Math.random()*30,s:.22+Math.random()*.2});
- const COAT='#a8946a',COATD='#8a7650',COATL='#bba67a',HAT='#1a1816';
- function frame(t){
-  c.clearRect(0,0,200,300);
-  rain.forEach(r=>{px(r.x,r.y,0.2,1,'#56636f');r.y+=r.s;if(r.y>30){r.y=-1;r.x=Math.random()*20}});
-  const sg=Math.sin((t-t0)/900)*0.15+sigh, d=drop;
-  // lábak, cipők
-  px(6.5,24,2.5,4,'#26231f');px(11,24,2.5,4,'#26231f');px(5.5,28,3.5,1,'#111');px(11,28,3.5,1,'#111');
-  // kabát (lógó, csapott váll)
-  px(6,12+sg,8,12,COAT);px(5,13+sg,1,11,COAT);px(14,13+sg,1,11,COAT);px(4.5,14+sg,0.5,8,COATD);px(15,14+sg,0.5,8,COATD);
-  px(4,22,12,2,COAT);px(9.6,12+sg,0.8,12,COATD);px(5,18.5+sg,10,0.8,COATD);
-  // karok lógva
-  px(3.5,14+sg,1.5,6,'#9a875f');px(15,14+sg,1.5,6,'#9a875f');
-  // fej: mélyen lehajtva, kicsit oldalra billentve
-  const hy=2.2+sg+d, hx=0.4;
-  const fx=7+hx, fy=8+hy;
-  px(fx,fy,6,2.8,'#c9a27e');px(fx,fy,6,0.7,'#8f6f52');px(fx,fy+2.4,6,0.4,'#a8865f');
-  px(fx+1.1,fy+0.9,0.8,0.25,'#3a2a1e');px(fx+1.6,fy+0.75,0.5,0.25,'#3a2a1e');
-  px(fx+4.1,fy+0.9,0.8,0.25,'#3a2a1e');px(fx+3.9,fy+0.75,0.5,0.25,'#3a2a1e');
-  px(fx+1.3,fy+1.3,0.6,0.6,'#1a1816');px(fx+4.1,fy+1.3,0.6,0.6,'#1a1816');
-  px(fx+2.3,fy+2.15,1.4,0.25,'#5a3a2a');px(fx+2.0,fy+2.35,0.35,0.25,'#5a3a2a');px(fx+3.65,fy+2.35,0.35,0.25,'#5a3a2a');
-  px(6+hx,3+hy,8,3,HAT);px(6+hx,6+hy,8,0.8,'#b3261e');px(3.8+hx,6.8+hy,13,1,HAT);
-  // felállított gallér az arc két oldalán
-  px(5.2,10+sg,1.8,3.5,COATL);px(5.8,9.2+sg,1.2,1,COATL);px(6.6,10.4+sg,0.5,3,COATD);
-  px(13.2,10+sg,1.8,3.5,COATL);px(13.2,9.2+sg,1.2,1,COATL);px(13,10.4+sg,0.5,3,COATD);
-  // tábla
-  px(3,17+sg,14,5,'#efe6d2');c.strokeStyle='#b3261e';c.lineWidth=3;c.strokeRect(31.5,171.5+sg*U,137,47);
-  px(3,17+sg,1,1.2,'#c9a27e');px(16,17+sg,1,1.2,'#c9a27e');
-  // könnycsepp
-  if(!tear&&Math.random()<0.008)tear={x:Math.random()<.5?fx+1.45:fx+4.25,y:fy+1.9};
-  if(tear){px(tear.x,tear.y,0.35,0.5,'#8fb3d9');tear.y+=0.05;if(tear.y>fy+3.2)tear=null}
-  requestAnimationFrame(frame);
- }
- const tag=$('tag');
- function next(){
-  const n=names[i];tag.textContent='„'+n+'”';const fh=cv.clientHeight||300;tag.style.fontSize=Math.round(fh*(n.length>6?0.034:0.046))+'px';
-  tag.style.color=n==='?'?'#b3261e':'#1d1b18';
-  drop=0.9;tag.style.transform='translateY(4px) rotate(-2deg)';
-  if(n==='?')sigh=0.6;
-  setTimeout(()=>{drop=0;sigh=0;tag.style.transform='rotate(-1deg)'},n==='?'?1800:550);
-  i=(i+1)%names.length;setTimeout(next,n==='?'?3400:2300);
- }
- next();requestAnimationFrame(frame);
+ const hero=$('hero'),sc=$('scene'),fw=$('figwrap'),tag=$('tag'),tears=$('tears'),rc=$('rain');if(!sc)return;
+ const W=768,H=1376,FEET=1017,HAT=188;let S=1;
+ function fit(){const w=hero.clientWidth,h=hero.clientHeight;S=Math.max(w/W,h/H);
+  const txt=hero.querySelector('.herotxt').offsetHeight+18;let top=Math.min(0,(h-txt)-FEET*S);top=Math.max(top,-(HAT*S-16));
+  sc.style.transform=`translate(${(w-W*S)/2}px,${top}px) scale(${S})`}
+ fit();addEventListener('resize',fit);document.fonts&&document.fonts.ready.then(fit);
+ const names=['QUIZ','NANU-NANU','DÉVA','TANÁR','?'];let i=0;
+ function next(){const n=names[i];tag.textContent='„'+n+'”';tag.style.fontSize=(n.length>6?24:34)+'px';tag.style.color=n==='?'?'#b3261e':'#1d1b18';
+  fw.classList.add('sigh');setTimeout(()=>fw.classList.remove('sigh'),n==='?'?1700:600);
+  i=(i+1)%names.length;setTimeout(next,n==='?'?3400:2300)}
+ next();
+ const EYES=[[305,398],[462,398]];
+ setInterval(()=>{if(document.hidden)return;const e=EYES[Math.random()<.5?0:1],d=document.createElement('i');d.style.left=(e[0]+Math.random()*10-5)+'px';d.style.top=e[1]+'px';tears.appendChild(d);
+  d.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY(70px)',opacity:0}],{duration:1400,easing:'ease-in'}).onfinish=()=>d.remove()},420);
+ rc.width=W;rc.height=H;const g=rc.getContext('2d');const drops=[];for(let k=0;k<90;k++)drops.push({x:Math.random()*W,y:Math.random()*H,v:9+Math.random()*7});
+ (function rain(){g.clearRect(0,0,W,H);g.fillStyle='rgba(170,190,215,.35)';for(const r of drops){g.fillRect(r.x|0,r.y|0,3,14);r.y+=r.v;r.x-=1;if(r.y>H){r.y=-20;r.x=Math.random()*W}}requestAnimationFrame(rain)})();
  $('cta').addEventListener('click',()=>{$('f').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('name').focus(),500)});
 })();
 })();
