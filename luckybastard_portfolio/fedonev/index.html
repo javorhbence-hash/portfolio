@@ -3,24 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb. Válaszd ki a sajátodat, amíg még lehet.">
-<meta property="og:title" content="Mi lenne a fedőneved?">
-<meta property="og:description" content="Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb. Most még választhatsz.">
+<meta name="description" content="Ügynöknek lenni ciki. Legalább a fedőneved ne legyen az.">
+<meta property="og:title" content="Ügynöknek lenni ciki. Legalább a fedőneved ne legyen az.">
+<meta property="og:description" content="Vágó „Quiz” lett, Szikora „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://luckybastard.hu/fedonev/">
-<meta property="og:image" content="https://luckybastard.hu/fedonev/og.png">
+<meta property="og:image" content="https://luckybastard.hu/fedonev/og.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="hu_HU">
 <meta name="twitter:card" content="summary_large_image">
 <title>Fedőnév-generátor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,900;1,900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
   :root{--paper:#efe6d2;--ink:#1d1b18;--red:#b3261e;--muted:#6b6355}
   *{box-sizing:border-box}
   body{margin:0;background:#2a2723;color:var(--ink);font-family:'Courier Prime',monospace;min-height:100vh}
   .wrap{max-width:480px;margin:0 auto;padding:20px 16px 48px}
+  .hero{text-align:center;padding-top:6px}
+  .hero h1{font-size:26px}
+  .fig{position:relative;width:200px;height:300px;margin:0 auto}
+  #pix{width:200px;height:300px;image-rendering:pixelated;display:block}
+  #tag{position:absolute;left:30px;top:170px;width:140px;height:50px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P','Courier New',monospace;color:#1d1b18;font-size:13px;transition:transform .3s}
+  h1 span{color:#e05a4f;display:block}
+  .cta{background:#b3261e;border-color:#b3261e;color:#fff;margin:4px 0 22px}
   h1{font-family:'Special Elite',monospace;color:var(--paper);font-size:30px;line-height:1.1;margin:8px 0 6px;letter-spacing:.5px}
   .lead{color:#cfc5b0;font-size:15px;line-height:1.45;margin:0 0 18px}
   .form{background:var(--paper);padding:18px 16px;border-radius:2px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
@@ -61,8 +68,12 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb.</h1>
-  <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Ha téged valaha beszerveznének, legyen kész neved a tarsolyban. Most még választhatsz.</p>
+  <div class="hero">
+    <div class="fig"><canvas id="pix" width="200" height="300"></canvas><div id="tag"></div></div>
+    <h1>Ügynöknek lenni ciki. <span>Legalább a fedőneved ne legyen az.</span></h1>
+    <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.</p>
+    <button type="button" class="cta" id="cta">Kérem a fedőnevem</button>
+  </div>
 
   <form class="form" id="f">
     <h2>BESZERVEZÉSI ADATLAP</h2>
@@ -424,6 +435,51 @@ $('share').addEventListener('click',async()=>{
   if(dl){try{await dl.save({filename:fn,data:blob});return}catch(err){if(err&&err.code==='declined')return}}
   msg.textContent='Itt nem nyílik meg a megosztás. Nyomd hosszan a képet, és mentsd el.';
 });
+
+(function(){
+ const cv=$('pix');if(!cv)return;const c=cv.getContext('2d'),U=10;
+ const px=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(Math.round(x*U),Math.round(y*U),Math.round(w*U),Math.round(h*U))};
+ const names=['QUIZ','NANU-NANU','DÉVA','TANÁR','?'];let i=0,drop=0,sigh=0,tear=null,t0=performance.now();
+ const rain=[];for(let k=0;k<16;k++)rain.push({x:Math.random()*20,y:Math.random()*30,s:.22+Math.random()*.2});
+ const COAT='#a8946a',COATD='#8a7650',COATL='#bba67a',HAT='#1a1816';
+ function frame(t){
+  c.clearRect(0,0,200,300);
+  rain.forEach(r=>{px(r.x,r.y,0.2,1,'#56636f');r.y+=r.s;if(r.y>30){r.y=-1;r.x=Math.random()*20}});
+  const sg=Math.sin((t-t0)/900)*0.15+sigh, d=drop;
+  // lábak, cipők
+  px(6.5,24,2.5,4,'#26231f');px(11,24,2.5,4,'#26231f');px(5.5,28,3.5,1,'#111');px(11,28,3.5,1,'#111');
+  // kabát (lógó, csapott váll)
+  px(6,12+sg,8,12,COAT);px(5,13+sg,1,11,COAT);px(14,13+sg,1,11,COAT);px(4.5,14+sg,0.5,8,COATD);px(15,14+sg,0.5,8,COATD);
+  px(4,22,12,2,COAT);px(9.6,12+sg,0.8,12,COATD);px(5,18.5+sg,10,0.8,COATD);
+  // karok lógva
+  px(3.5,14+sg,1.5,6,'#9a875f');px(15,14+sg,1.5,6,'#9a875f');
+  // fej: mélyen lehajtva, kicsit oldalra billentve
+  const hy=2.2+sg+d, hx=0.4;
+  px(7+hx,8+hy,6,2.6,'#3b352d');
+  px(6+hx,3+hy,8,3,HAT);px(6+hx,6+hy,8,0.8,'#b3261e');px(3.8+hx,6.8+hy,13,1,HAT);
+  // felállított gallér az arc két oldalán
+  px(5.2,10+sg,1.8,3.5,COATL);px(5.8,9.2+sg,1.2,1,COATL);px(6.6,10.4+sg,0.5,3,COATD);
+  px(13.2,10+sg,1.8,3.5,COATL);px(13.2,9.2+sg,1.2,1,COATL);px(13,10.4+sg,0.5,3,COATD);
+  // tábla
+  px(3,17+sg,14,5,'#efe6d2');c.strokeStyle='#b3261e';c.lineWidth=3;c.strokeRect(31.5,171.5+sg*U,137,47);
+  px(3,17+sg,1,1.2,'#c9a27e');px(16,17+sg,1,1.2,'#c9a27e');
+  // könnycsepp
+  if(!tear&&Math.random()<0.006)tear={x:Math.random()<.5?8.6:11.6,y:10.2+hy};
+  if(tear){px(tear.x,tear.y,0.4,0.6,'#8fb3d9');tear.y+=0.06;if(tear.y>13)tear=null}
+  requestAnimationFrame(frame);
+ }
+ const tag=$('tag');
+ function next(){
+  const n=names[i];tag.textContent=n;tag.style.fontSize=n.length>6?'11px':'15px';
+  tag.style.color=n==='?'?'#b3261e':'#1d1b18';
+  drop=0.9;tag.style.transform='translateY(4px) rotate(-2deg)';
+  if(n==='?')sigh=0.6;
+  setTimeout(()=>{drop=0;sigh=0;tag.style.transform='rotate(-1deg)'},n==='?'?1800:550);
+  i=(i+1)%names.length;setTimeout(next,n==='?'?3400:2300);
+ }
+ next();requestAnimationFrame(frame);
+ $('cta').addEventListener('click',()=>{$('f').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('name').focus(),500)});
+})();
 })();
 </script>
 </body>
