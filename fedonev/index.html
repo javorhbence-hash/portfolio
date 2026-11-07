@@ -88,8 +88,6 @@
     <input type="text" id="job" placeholder="pl. kvízmester, popzenész, politikus">
     <label>Mivel töltöd a szabadidődet?</label>
     <input type="text" id="hobby" placeholder="pl. futás, bakelit">
-    <label>Szavajárásod <small>(egy szó vagy rövid mondás)</small></label>
-    <input type="text" id="saying" placeholder="pl. figyu">
     <label>Egy ciki szokásod</label>
     <input type="text" id="habit" placeholder="pl. minden mondatot „na szóval”-lal kezdek">
     <label>Honnan származol? <small>(település)</small></label>
@@ -191,49 +189,50 @@ const JOBS=[
  [/blog/, ["Bejegyzés"], [["Archívum", "Mindent megtartott. Mindent."]], [["Életút", "A jelentés előtt elmesélte a nagymamája receptjét. Három oldalon."]]]
 ];
 const HOBBIES=[
- [/fut/, "Rajtszám", ["Strava", "Ha nem volt fent Stravára, a megfigyelés meg sem történt."]],
- [/síel|\bsí\b/, "Pálya", ["Hütte", "A pályán ritkán látták, a hüttében annál többször."]],
- [/foci|futball/, "Les", ["Kapitány", "A kanapéról mindig jobban tudta."]],
+ [/fut/, "Jogger", ["Strava", "Ha nem volt fent Stravára, a megfigyelés meg sem történt."]],
+ [/síel|\bsí\b/, "Tányéros", ["Hütte", "A pályán ritkán látták, a hüttében annál többször."]],
+ [/foci|futball/, "Spíler", ["Kapitány", "A kanapéról mindig jobban tudta."]],
  [/horgász/, "Kapás", ["Ekkora", "Jelentései mindig nagyobbak voltak, mint a valóság."]],
  [/olvas|könyv/, "Szamárfül", ["Goodreads", "Több könyvet értékelt, mint amennyit elolvasott."]],
- [/gam|videojáték|playstation|xbox|konzol/, "Szint", ["Respawn", "Hiába bukott le, másnap újra ott volt."]],
- [/rubik|kocka/, "Ernő", ["Kirakva", "A kockát negyven másodperc alatt kirakta. Egy jelentést soha."]],
- [/bakelit|lemez|vinyl/, "Fordulat", ["Analóg", "Minden jelentés előtt elmagyarázta, miért szól jobban bakeliten."]],
- [/kert/, "Kapa", ["Cukkini", "Augusztusban mindenkinek vitt. Akár kérte, akár nem."]],
- [/főz/, "Kanál", ["Fogás", "Minden vacsoráját elmesélte. Fogásonként."]],
- [/bor/, "Dugó", ["Lecsengés", "A kannás bort is jellemezte."]],
- [/tea/, "Filter", ["Áztatás", "Addig nem kezdte el a találkozót, amíg le nem telt a három perc."]],
- [/kávé/, "Zacc", ["Barista", "A presszóban kioktatta a pultost."]],
- [/jóga/, "Szőnyeg", ["Namaszté", "Jelentés előtt mindig mély levegőt vett. Hangosan."]],
- [/bicikl|bring|kerékpár/, "Pedál", ["Lycra", "A kávézóba is abban ment."]],
- [/túr/, "Bakancs", ["Csúcs", "A hegyre csak a fotó miatt ment fel."]],
- [/macsk/, "Cirmos", ["Konzerv", "A macska szervezte be, nem fordítva."]],
- [/kutya/, "Póráz", ["Séta", "Napi háromszor ugyanaz az útvonal. Ideális megfigyelő."]],
- [/sorozat|netflix|film/, "Évad", ["Spoiler", "Mindenkiről mindent elmondott. Előre."]],
- [/fotó/, "Vaku", ["Napnyugta", "Csak naplementekor volt hajlandó megfigyelni."]],
- [/zen/, "Hangjegy", ["Spotify", "Évente egyszer mindent elárult magáról. Önként."]],
- [/sakk/, "Gyalog", ["Patt", "Jelentései után soha senki nem lépett semmit."]],
- [/úsz/, "Tempó", ["Klór", "Mindig érezni lehetett rajta, hol járt."]],
- [/tánc/, "Lépés", ["Ritmus", "Nem volt neki."]],
- [/edz|gym|kondi|crossfit/, "Súlyzó", ["Lábnap", "Egyszer sem tartotta meg."]],
+ [/gam|videojáték|playstation|xbox|konzol/, "IDDQD", ["Respawn", "Hiába bukott le, másnap újra ott volt."]],
+ [/rubik|kocka/, "Bűvös", ["Kirakva", "A kockát negyven másodperc alatt kirakta. Egy jelentést soha."]],
+ [/bakelit|lemez|vinyl/, "B-oldal", ["Analóg", "Minden jelentés előtt elmagyarázta, miért szól jobban bakeliten."]],
+ [/kert/, "Palánta", ["Cukkini", "Augusztusban mindenkinek vitt. Akár kérte, akár nem."]],
+ [/főz/, "Fakanál", ["Fogás", "Minden vacsoráját elmesélte. Fogásonként."]],
+ [/bor/, "Dugóhúzó", ["Lecsengés", "A kannás bort is jellemezte."]],
+ [/tea/, "Earl", ["Áztatás", "Addig nem kezdte el a találkozót, amíg le nem telt a három perc."]],
+ [/kávé/, "Kotyogós", ["Barista", "A presszóban kioktatta a pultost."]],
+ [/jóga/, "Lótusz", ["Namaszté", "Jelentés előtt mindig mély levegőt vett. Hangosan."]],
+ [/bicikl|bring|kerékpár/, "Csengő", ["Lycra", "A kávézóba is abban ment."]],
+ [/túr/, "Kéktúra", ["Csúcs", "A hegyre csak a fotó miatt ment fel."]],
+ [/macsk/, "Dorombi", ["Konzerv", "A macska szervezte be, nem fordítva."]],
+ [/kutya/, "Gazdi", ["Séta", "Napi háromszor ugyanaz az útvonal. Ideális megfigyelő."]],
+ [/sorozat|netflix|hbo/, "Évadzáró", ["Spoiler", "Mindenkiről mindent elmondott. Előre."]],
+ [/mozi|film/, "Csapó", ["Stáblista", "Mindig megvárta a végét. Hátha van még jelenet."]],
+ [/fotó/, "Objektív", ["Napnyugta", "Csak naplementekor volt hajlandó megfigyelni."]],
+ [/zen/, "Fülbemászó", ["Spotify", "Évente egyszer mindent elárult magáról. Önként."]],
+ [/sakk/, "Matt", ["Patt", "Jelentései után soha senki nem lépett semmit."]],
+ [/úsz/, "Fejes", ["Klór", "Mindig érezni lehetett rajta, hol járt."]],
+ [/tánc/, "Parkett", ["Ritmus", "Nem volt neki."]],
+ [/edz|gym|kondi|crossfit/, "Kigyúrt", ["Lábnap", "Egyszer sem tartotta meg."]],
  [/utaz/, "Bőrönd", ["Jetlag", "Mindig más időzónában volt, mint a tartótiszt."]],
- [/kötés|horgol/, "Gombolyag", ["Szem", "Egyet sem ejtett el."]],
+ [/kötés|horgol/, "Kötőtű", ["Szem", "Egyet sem ejtett el."]],
  [/fesztivál|sziget|koncert/, "Karszalag", ["Sziget", "Egy hétig senki nem érte el."]],
  [/társas|catan/, "Dobókocka", ["Szabálykönyv", "Minden kör előtt felolvasta."]],
  [/karaoke/, "Mikrofon", ["Refrén", "A versszakokat soha nem tudta."]],
  [/sör|kocsma|kraft/, "Korsó", ["IPA", "Minden sörről elmondta a véleményét. Senki nem kérte."]],
- [/fest|rajzol|akvarell/, "Ecset", ["Absztrakt", "Senki nem tudta, mit ábrázol. A jelentései sem."]],
- [/barkács|diy|szerel/, "Kalapács", ["Félkész", "A polc azóta is a földön van."]],
- [/tenisz/, "Ütő", ["Sólyomszem", "Minden labdát visszanézetett."]],
- [/padel/, "Kalitka", ["Trend", "Két éve még teniszezett."]],
+ [/fest|rajzol|akvarell/, "Paletta", ["Absztrakt", "Senki nem tudta, mit ábrázol. A jelentései sem."]],
+ [/barkács|diy|szerel/, "Ezermester", ["Félkész", "A polc azóta is a földön van."]],
+ [/tenisz/, "Fonák", ["Sólyomszem", "Minden labdát visszanézetett."]],
+ [/padel/, "Tenyeres", ["Trend", "Két éve még teniszezett."]],
  [/podcast/, "Fülhallgató", ["Gyorsítva", "Mindent másfélszeres sebességgel hallgatott. A kihallgatást is."]],
- [/kripto|bitcoin|crypto/, "Tárca", ["Holdra", "Mindig mondta, hogy most fog kilőni."]],
+ [/kripto|bitcoin|crypto/, "Hodl", ["Holdra", "Mindig mondta, hogy most fog kilőni."]],
  [/tiktok|insta|görget|reels/, "Hüvelykujj", ["Algoritmus", "Jobban ismerte őt, mint a szolgálat."]],
- [/horoszkóp|asztrol|csillagjegy/, "Csillag", ["Merkúr", "Minden kudarcát a Merkúrra fogta."]],
- [/puzzle|kirakó/, "Darab", ["Hiány", "Mindig egy darab hiányzott."]],
- [/golf/, "Lyuk", ["Klubház", "A pályán ritkán látták."]],
- [/mászás|mászik|boulder/, "Kötél", ["Magnézia", "Mindenhol nyomot hagyott."]],
- [/road ?trip|autóz/, "Térkép", ["Benzinkút", "Minden kútnál megállt. Hot dogért."]]
+ [/horoszkóp|asztrol|csillagjegy/, "Aszcendens", ["Merkúr", "Minden kudarcát a Merkúrra fogta."]],
+ [/puzzle|kirakó/, "Kirakó", ["Hiány", "Mindig egy darab hiányzott."]],
+ [/golf/, "Caddy", ["Klubház", "A pályán ritkán látták."]],
+ [/mászás|mászik|boulder/, "Gekkó", ["Magnézia", "Mindenhol nyomot hagyott."]],
+ [/road ?trip|autóz/, "Matrica", ["Benzinkút", "Minden kútnál megállt. Hot dogért."]]
 ];
 const SURNAMES={"kovács": "Patkó", "szabó": "Cérna", "nagy": "Kicsi", "kis": "Óriás", "kiss": "Puszi", "molnár": "Liszt", "farkas": "Piroska", "varga": "Csizma", "papp": "Ámen", "pap": "Ámen", "takács": "Fonal", "juhász": "Bárány", "lakatos": "Kulcs", "mészáros": "Bárd", "simon": "Garfunkel", "fodor": "Göndör", "szűcs": "Bunda", "bodnár": "Hordó", "kocsis": "Ostor", "jakab": "Kalap", "hegedűs": "Vonó", "halász": "Háló", "erdős": "Tisztás", "fazekas": "Korong", "vörös": "Ketchup", "király": "Jobbágy", "nemes": "Paraszt", "bíró": "Ítélet", "pásztor": "Furulya", "jávor": "Szirup", "major": "Tanya", "vass": "Rozsda", "kertész": "Gyom", "fehér": "Hipó", "soós": "Perec", "sós": "Perec", "bárány": "Gyapjú", "szekeres": "Gyeplő", "katona": "Vigyázz", "sipos": "Fütty", "győri": "Keksz", "pintér": "Abroncs", "gulyás": "Bogrács", "rigó": "Csőr", "sas": "Galamb", "holló": "Varjú", "szántó": "Eke", "kerekes": "Defekt", "szalai": "Szalma", "mező": "Pitypang", "vadász": "Nyúl", "boros": "Fröccs", "tamás": "Hitetlen", "kántor": "Orgona", "rózsa": "Tövis", "virág": "Váza", "szőke": "Barna", "barna": "Szőke", "deák": "Puska", "magyar": "Hungarikum", "csizmadia": "Sarok", "kardos": "Toll", "lovas": "Gebe", "szép": "Csúnya", "vincze": "Szüret", "szilágyi": "Erzsébet", "lukács": "Fürdő", "bálint": "Valentin", "pál": "Fordulat", "illés": "Szekér", "veres": "Cékla", "budai": "Pesti", "somogyi": "Balaton", "fülöp": "Herceg", "jónás": "Cet", "ádám": "Éva", "dávid": "Parittya", "benedek": "Elek", "mátyás": "Igazságos", "bakos": "Kecske", "bognár": "Kerék", "fenyő": "Karácsony", "hollós": "Varjú", "darázs": "Fullánk", "méhes": "Zümm", "sólyom": "Veréb", "galambos": "Morzsa", "csonka": "Teljes", "bárdos": "Bárd", "szakács": "Kóstoló", "asztalos": "Gyalu", "kalmár": "Alku", "révész": "Csónak", "csizmár": "Talp", "vadas": "Áfonya", "gombos": "Lyuk", "szappanos": "Hab", "kalapos": "Kalap", "hajós": "Lék", "erdei": "Gomba", "hegyi": "Lejtő", "völgyi": "Csúcs", "mezei": "Pipacs", "medve": "Málna", "szarka": "Fényes", "pataki": "Csobogó", "nyári": "Strand", "téli": "Szánkó", "fényes": "Napszemüveg", "szilvási": "Gombóc", "almási": "Csutka", "diós": "Bejgli", "mákos": "Guba", "borsos": "Csípős", "mézes": "Csupor", "arany": "Toldi", "ezüst": "Második", "kemény": "Puha", "bátor": "Nyuszi", "gazdag": "Csóró", "szegedi": "Papucs", "pécsi": "Mecsek", "debreceni": "Kolbász", "egri": "Bikavér", "makai": "Hagyma", "kecskeméti": "Barack", "tokaji": "Aszú", "csóka": "Csillogó"};
 const UNITS=["III/III-K · Kreatívipari elhárítás", "III/II-Z · Zoom-hívások felderítése", "III/IV-L · Lépcsőházi megfigyelés", "III/III-F · Facebook-kommentek", "III/I-M · Családi Messenger-csoport", "III/III-T · Társasházi közgyűlések", "III/II-B · Brunch-elhárítás", "III/II-K · Kocsmai beszélgetések", "III/IV-SZ · Szülői értekezletek", "III/III-P · Plázai mozgások", "III/III-G · Grillpartik", "III/II-E · Esküvői asztaltársaságok"];
@@ -288,10 +287,6 @@ function strategies(d,r){
   }
   const t=truncName(surRaw);
   if(t) dumb.push({key:'fafej',name:t,label:'FAFEJŰ',why:'Levágták a vezetékneve végét, és odabiggyesztettek egy magánhangzót. Ennyi telt.'});
-  if(d.saying.trim()){
-    const w=cap(d.saying.trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,''));
-    if(w) fun.push({key:'redup',name:w+'-'+w,label:'REDUPLIKÁCIÓ',why:`Egyszer hallották tőle, hogy „${w.toLocaleLowerCase('hu-HU')}”. Kétszer leírták, és kész.`});
-  }
   if(d.town.trim()){
     let tw=cap(d.town.trim().split(/[\s,]/)[0]); if(!/i$/.test(tw)) tw+='i';
     dumb.push({key:'fafej',name:tw,label:'FAFEJŰ',why:'Megkérdezték, honnan való. Utána már nem kérdeztek semmit.'});
@@ -392,7 +387,7 @@ function draw(){
 
 $('f').addEventListener('submit',async e=>{
   e.preventDefault();
-  const d={name:$('name').value,job:$('job').value,hobby:$('hobby').value,saying:$('saying').value,town:$('town').value,habit:$('habit').value};
+  const d={name:$('name').value,job:$('job').value,hobby:$('hobby').value,town:$('town').value,habit:$('habit').value};
   if(d.name.trim().split(/\s+/).length<2){$('err').textContent='Teljes nevet kérünk, elvtárs.';return}
   if(!$('self').checked){$('err').textContent='Csak saját magadat szervezheted be. Pipáld be a négyzetet.';return}
   $('err').textContent='';
