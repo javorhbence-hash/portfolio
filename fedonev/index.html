@@ -472,7 +472,7 @@ $('share').addEventListener('click',async()=>{
  }
  const tag=$('tag');
  function next(){
-  const n=names[i];tag.textContent=n;const fh=cv.clientHeight||300;tag.style.fontSize=Math.round(fh*(n.length>6?0.037:0.05))+'px';
+  const n=names[i];tag.textContent='„'+n+'”';const fh=cv.clientHeight||300;tag.style.fontSize=Math.round(fh*(n.length>6?0.034:0.046))+'px';
   tag.style.color=n==='?'?'#b3261e':'#1d1b18';
   drop=0.9;tag.style.transform='translateY(4px) rotate(-2deg)';
   if(n==='?')sigh=0.6;
