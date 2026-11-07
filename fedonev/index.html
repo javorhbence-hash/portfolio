@@ -25,7 +25,6 @@
   .scene{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:0 0}
   .scene .bg,.figimg{position:absolute;left:0;top:0;width:768px;height:1376px;image-rendering:pixelated;-webkit-user-select:none;user-select:none;pointer-events:none}
   .figwrap{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:384px 1017px;transition:transform .45s ease}
-  .figwrap.sigh{transform:translateY(6px) rotate(-.6deg) scaleY(.99)}
   #tag{position:absolute;left:226px;top:625px;width:316px;height:206px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P','Courier New',monospace;color:#1d1b18;text-align:center;line-height:1.3}
   #tears{position:absolute;inset:0}
   #tears i{position:absolute;width:6px;height:10px;background:#9fd6ff;border-radius:0 0 3px 3px}
@@ -34,7 +33,9 @@
   #rain{position:absolute;left:0;top:0;width:768px;height:1376px;pointer-events:none}
   .crt{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(rgba(0,0,0,.16) 0 2px,transparent 2px 5px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
   .herotxt{position:absolute;left:0;right:0;bottom:0;padding:40px 16px calc(16px + env(safe-area-inset-bottom));text-align:center;background:linear-gradient(rgba(21,23,28,0),rgba(21,23,28,.85) 40px,rgba(21,23,28,.92))}
-  .hero h1{font-size:clamp(21px,6.2vw,27px);margin:0 0 6px;line-height:1.12}
+  .hero h1{margin:0 0 8px;line-height:1.05}
+  .hero h1 .h1a{display:block;white-space:nowrap;font-weight:400;font-size:min(6.9vw,33px)}
+  .hero h1 span{font-size:clamp(18px,5.4vw,23px);line-height:1.2;margin-top:6px}
   .hero .lead{font-size:14px;margin:0 0 12px;line-height:1.4}
   h1 span{color:#e05a4f;display:block}
   .cta{background:#b3261e;border-color:#b3261e;color:#fff;margin:0;padding:15px;font-size:18px}
@@ -92,8 +93,8 @@
       <div class="crt"></div>
     </div>
     <div class="herotxt">
-      <h1>Ügynöknek lenni ciki. <span>Legalább a fedőneved ne legyen az.</span></h1>
-      <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.</p>
+      <h1><b class="h1a">Ügynöknek lenni ciki.</b> <span>Legalább a fedőneved<br>ne legyen az.</span></h1>
+      <p class="lead">Vágó „Quiz” István, Szikora „Nanu-Nanu” Róbert… Nekik nem volt beleszólásuk. Neked most még van.</p>
       <button type="button" class="cta" id="cta">Kérem a fedőnevem</button>
     </div>
   </div>
@@ -460,7 +461,7 @@ $('share').addEventListener('click',async()=>{
  fit();addEventListener('resize',fit);document.fonts&&document.fonts.ready.then(fit);
  const names=['QUIZ','NANU-NANU','DÉVA','TANÁR','?'];let i=0;
  function next(){const n=names[i];tag.textContent='„'+n+'”';tag.style.fontSize=(n.length>6?24:34)+'px';tag.style.color=n==='?'?'#b3261e':'#1d1b18';
-  fw.classList.add('sigh');setTimeout(()=>fw.classList.remove('sigh'),n==='?'?1700:600);
+  
   i=(i+1)%names.length;setTimeout(next,n==='?'?3400:2300)}
  next();
  const EYES=[[305,398],[462,398]];
