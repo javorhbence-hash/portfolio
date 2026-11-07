@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb. Válaszd ki a sajátodat, amíg még lehet.">
+<meta property="og:title" content="Mi lenne a fedőneved?">
+<meta property="og:description" content="Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb. Most még választhatsz.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luckybastard.hu/fedonev/">
+<meta property="og:image" content="https://luckybastard.hu/fedonev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="hu_HU">
+<meta name="twitter:card" content="summary_large_image">
+<title>Fedőnév-generátor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#efe6d2;--ink:#1d1b18;--red:#b3261e;--muted:#6b6355}
+  *{box-sizing:border-box}
+  body{margin:0;background:#2a2723;color:var(--ink);font-family:'Courier Prime',monospace;min-height:100vh}
+  .wrap{max-width:480px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-family:'Special Elite',monospace;color:var(--paper);font-size:30px;line-height:1.1;margin:8px 0 6px;letter-spacing:.5px}
+  .lead{color:#cfc5b0;font-size:15px;line-height:1.45;margin:0 0 18px}
+  .form{background:var(--paper);padding:18px 16px;border-radius:2px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+  .form h2{font-family:'Special Elite';font-size:17px;margin:0 0 12px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+  label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px;text-transform:uppercase;letter-spacing:.5px}
+  label small{font-weight:400;text-transform:none;color:var(--muted);letter-spacing:0}
+  input[type=text]{width:100%;font:16px 'Courier Prime',monospace;padding:9px 10px;border:1.5px solid var(--ink);background:#fbf7ee;border-radius:0}
+  .check{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:14px;font-weight:400;text-transform:none;letter-spacing:0}
+  .check input{margin-top:3px;width:18px;height:18px}
+  button{font:700 16px 'Courier Prime',monospace;cursor:pointer;border:2px solid var(--ink);background:var(--ink);color:var(--paper);padding:12px 14px;width:100%;margin-top:16px;text-transform:uppercase;letter-spacing:1px}
+  button.ghost{background:transparent;color:var(--paper);border-color:var(--paper)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .err{color:var(--red);font-size:14px;margin-top:8px;min-height:1em}
+  #out{display:none;margin-top:22px}
+  #cardImg{width:100%;display:block;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .hint{color:#cfc5b0;font-size:13px;text-align:center;margin:8px 0 0}
+  .method{background:#1d1b18;border:1px solid #4a453d;color:#e8dfcb;padding:12px 14px;margin-top:14px;font-size:14px;line-height:1.45}
+  .method b{color:#fff}
+  .row{display:flex;gap:10px}
+  .row button{flex:1}
+  .pickhead{color:#e8dfcb;font-family:'Special Elite';font-size:17px;margin:18px 0 8px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips button{width:auto;margin:0;padding:8px 12px;font-size:14px;text-transform:none;letter-spacing:0;background:transparent;color:var(--paper);border:1.5px solid #6b6355}
+  .chips button.on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .links{display:flex;gap:10px;margin-top:10px}
+  .links a{flex:1;text-align:center;color:var(--paper);border:1.5px solid #6b6355;padding:10px 6px;text-decoration:none;font-weight:700;font-size:14px}
+  .sharebar{display:none;position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#2a2723 30%)}
+  .sharebar button{margin:0;background:#b3261e;border-color:#b3261e;color:#fff;font-size:18px;padding:15px}
+  .smsg{color:#cfc5b0;font-size:13px;text-align:center;margin-top:6px;min-height:0}
+  .wrap{padding-bottom:110px}
+  .foot{color:#8e866f;font-size:12px;line-height:1.5;margin-top:26px}
+  .foot b{color:#b9b09a}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ügynöknek lenni ciki. Béna fedőnevet kapni még cikibb.</h1>
+  <p class="lead">Vágó István „Quiz” lett, Szikora Róbert „Nanu-Nanu”. Nekik nem volt beleszólásuk. Ha téged valaha beszerveznének, legyen kész neved a tarsolyban. Most még választhatsz.</p>
+
+  <form class="form" id="f">
+    <h2>BESZERVEZÉSI ADATLAP</h2>
+    <label>Név <small>(vezetéknév elöl)</small></label>
+    <input type="text" id="name" placeholder="pl. Minta Béla" autocomplete="name">
+    <label>Foglalkozás</label>
+    <input type="text" id="job" placeholder="pl. kvízmester, popzenész, politikus">
+    <label>Mivel töltöd a szabadidődet?</label>
+    <input type="text" id="hobby" placeholder="pl. futás, bakelit">
+    <label>Szavajárásod <small>(egy szó vagy rövid mondás)</small></label>
+    <input type="text" id="saying" placeholder="pl. figyu">
+    <label>Egy ciki szokásod <small>(nem kötelező, de ebből lesz a legjobb)</small></label>
+    <input type="text" id="habit" placeholder="pl. minden mondatot „na szóval”-lal kezdek">
+    <label>Honnan származol? <small>(település)</small></label>
+    <input type="text" id="town" placeholder="pl. Szentendre">
+    <label class="check"><input type="checkbox" id="self"> Ez az én nevem. Csak magamat szervezem be.</label>
+    <button type="submit">Mutasd a fedőneveimet</button>
+    <div class="err" id="err"></div>
+  </form>
+
+  <div id="out">
+    <img id="cardImg" alt="Fedőnév-karton">
+    <div class="method" id="method"></div>
+    <p class="pickhead">Válassz egyet, amíg még lehet:</p>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+<div class="sharebar" id="sharebar"><button type="button" id="share">Megosztás</button><div class="smsg" id="copyMsg"></div></div>
+
+<canvas id="c" width="1080" height="1350" style="display:none"></canvas>
+
+<script>
+(function(){
+const $ = id => document.getElementById(id);
+const HU = s => s.toLocaleUpperCase('hu-HU');
+const cap = s => s ? s.charAt(0).toLocaleUpperCase('hu-HU') + s.slice(1).toLocaleLowerCase('hu-HU') : s;
+const norm = s => (s||'').toLocaleLowerCase('hu-HU').trim();
+
+function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){let a=seed||1;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const pick=(arr,r)=>arr[Math.floor(r()*arr.length)];
+
+// generálva: review/data2.py
+const JOBS=[
+ [/kvíz|quiz|műsorvezet/, ["Kérdés"], [["Felező", "Mindig csak a felét mondta el."]], [["Végleges", "Minden jelentés után megkérdezte: végleges?"]]],
+ [/pop|rock|zenész|énekes|\bdj\b|zeneszerz|rapper/, ["Sláger"], [["Playback", "A jelentést más mondta fel, ő csak tátogott."]], [["Egyslágeres", "Egyszer jelentett valami fontosat. Azóta azzal turnézik."]]],
+ [/politik|képviselő|polgármester|miniszter|államtitkár/, ["Szavazat"], [["Ígéret", "Bőkezűen jelentett. Utólag egyik sem teljesült."]], [["Később", "Minden kérdésre azt felelte, hogy erre később visszatér. Nem tért vissza."]]],
+ [/kreat|reklám|szövegír|copy|ügynökség/, ["Szlogen"], [["Határidő", "Megkérdezték, mikor lesz kész a jelentés. Azóta ez a neve."]], [["Final", "A jelentés fájlneve final_final_v3 volt. Ez volt a rövidebbik."]]],
+ [/marketing|brand|márka/, ["Kampány"], [["Persona", "Mindenkiről jelentett, aki 25 és 45 közötti, városi és nyitott az újra."]], [["Engagement", "Jelentései rengeteg reakciót hoztak. Eredményt egyet sem."]]],
+ [/program|fejleszt|develop|szoftver|informatik|\bit\b/, ["Bug"], [["Commit", "Mindig péntek délután követett el valamit."]], [["Feature", "Ha hibát találtak a jelentésében, azt mondta, szándékos."]]],
+ [/grafik|design|tervező/, ["Ecset"], [["Pantone", "A jelentését csak a megfelelő árnyalatban volt hajlandó leadni."]], [["Logó", "A tartótiszt minden munkájára ugyanazt kérte: legyen nagyobb."]]],
+ [/projekt|\bpm\b/, ["Feladat"], [["Csúszás", "Minden jelentése egy héttel később jött. Tervezetten."]], [["Státusz", "Hetente háromszor megkérdezte, hol tart a megfigyelés."]]],
+ [/vezető|igazgató|manager|menedzser|ceo|alapító|főnök/, ["Főnök"], [["Gyakornok", "A jelentéseit is a gyakornok írta. Ő csak aláírta."]], [["Meeting", "Minden jelentése egy újabb meetinggel zárult."]]],
+ [/egyetem|docens|professz/, ["Katedra"], [["Lábjegyzet", "A lényeg mindig a lábjegyzetben volt."]], [["Fogadóóra", "Szerdánként tízkor. Ha bent volt."]]],
+ [/tanár|oktat|tanít/, ["Kréta"], [["Ellenőrző", "Mindenkit beírt. A szülőket is."]], [["Szünet", "A szolgálat kérte, hogy legalább júliusban dolgozzon."]]],
+ [/orvos|doktor/, ["Recept"], [["Beutaló", "Mindenkit továbbküldött egy másik tartótiszthez."]], [["Olvashatatlan", "Hat év alatt egyetlen jelentését sem tudták elolvasni. A patikus igen."]]],
+ [/ügyvéd|jogász|bíró/, ["Paragrafus"], [["Kiskapu", "Minden utasítást betartott. Betű szerint."]], [["Óradíj", "A beszervező beszélgetést is kiszámlázta. Negyedórás bontásban."]]],
+ [/újságír|riporter|szerkeszt/, ["Toll"], [["Forrás", "Mindig saját magára hivatkozott. Névtelenül."]], [["Clickbait", "A jelentés címe mindig jobb volt, mint a jelentés."]]],
+ [/könyvel|pénzügy|bank|elemz/, ["Mérleg"], [["Excel", "Mindenkit beírt egy cellába. Szépen formázva."]], [["Negyedév", "Évente négyszer szólalt meg. Akkor határidőre."]]],
+ [/\bhr\b|toborz/, ["Interjú"], [["Jófej", "A jelentéseiben mindenki nagyon jó fej volt. Ez volt a gyanús."]], [["Wellbeing", "A kihallgatás előtt gyümölcsöt osztott."]]],
+ [/influencer|tartalomgyárt|youtuber|tiktok/, ["Lájk"], [["Kupon", "Minden jelentés végén volt egy tízszázalékos kedvezmény."]], [["Szponzor", "Csak fizetett partnerség keretében jelentett. Jelölve."]]],
+ [/vállalkoz/, ["Számla"], [["Átalány", "Nem részletezte, mit csinált. Egy összegben jelezte."]], [["Utalom", "A szolgálat a mai napig várja."]]],
+ [/színész/, ["Szerep"], [["Súgó", "Minden mondatát más mondta be neki."]], [["Pincér", "Színpadon még nem látták. A teraszon annál többször."]]],
+ [/fotós|fotográf/, ["Vaku"], [["Zoom", "Messziről mindent látott. Közelről semmit."]], [["Retus", "Jelentései szebbek voltak a valóságnál."]]],
+ [/mérnök/, ["Csavar"], [["Tűrés", "A hibáit mindig belőtte a szabványba."]], [["Ábra", "Egy kétsoros jelentéshez háromoldalas ábrát rajzolt."]]],
+ [/diák|hallgató|egyetemist/, ["Puska"], [["Pótvizsga", "Mindent csak másodszorra tudott meg."]], [["Mindjárt", "A jelentés mindig mindjárt kész volt."]]],
+ [/sofőr|futár|taxi/, ["Kormány"], [["Kanyar", "Mindent kerülőúton közölt."]], [["Waze", "Mindig tudott egy rövidebb utat. Soha nem volt rövidebb."]]],
+ [/edző|tréner/, ["Síp"], [["Széria", "Jelentéseit hármas szériákban adta le."]], [["Motiváció", "Minden jelentés előtt beszédet tartott a tartótisztnek."]]],
+ [/szakács|séf|cukrász/, ["Kanál"], [["Kóstoló", "A jelentés felét megette, mielőtt leadta."]], [["Csipet", "A mennyiségeket soha nem tudta megmondani."]]],
+ [/eladó|bolt|pénztár/, ["Kassza"], [["Blokk", "Mindenről volt papírja."]], [["Zárva", "A kassza mindig épp zárt, amikor jelenteni kellett."]]],
+ [/pap|lelkész|szerzetes/, ["Ámen"], [["Gyónás", "Mindent elmondtak neki. Ő is mindent továbbmondott."]], [["Prédikáció", "Rövid jelentést soha nem adott le."]]],
+ [/nyugdíj/, ["Nyugdíjas"], [["Pad", "A ház előtti padról mindent látott. Ingyen."]], [["Bezzeg", "Minden jelentése így kezdődött."]]],
+ [/pszichol|terapeut/, ["Kanapé"], [["Elfojtás", "Évekig elfojtotta a jelentéseit."]], [["Ötven Perc", "Pontosan ötven percig figyelt. Egy perccel sem tovább."]]],
+ [/ügyfélszolg|call ?center/, ["Vonal"], [["Várakozás", "Mindenkit tartásba tett. Zenével."]], [["Rögzítjük", "Minden beszélgetést rögzített. Minőségbiztosítási okokból."]]],
+ [/könyvtár/, ["Polc"], [["Csend", "Pisszegve jelentett."]], [["Lejárt", "Minden jelentése lejárt, mire leadta."]]],
+ [/pék/, ["Kifli"], [["Kovász", "Csak akkor jelentett, ha megkelt."]], [["Hajnal", "Négykor kelt. Délután már nem lehetett vele beszélni."]]],
+ [/fodrász/, ["Olló"], [["Melír", "Az igazságot is csak csíkokban mondta el."]], [["Igazítás", "Mindenki csak igazítást kért. Senki nem azt kapta."]]],
+ [/szerelő|villany|vízvezeték/, ["Fogó"], [["Zárlat", "Ahol megjelent, ott elment az áram."]], [["Csütörtök", "Mindig csütörtökre ígérte magát. Azt nem mondta, melyikre."]]],
+ [/portás|biztonsági őr|vagyonőr/, ["Kapu"], [["Belépő", "Mindenkit beengedett, akinek volt kártyája. Meg akinek nem."]], [["Szundi", "Éjszakai műszakban mindent látott. Belülről."]]],
+ [/pincér|felszolgál/, ["Tálca"], [["Borravaló", "A jelentés minősége a borravalótól függött."]], [["Kolléga", "Minden kérdésre azt felelte: a kolléga mindjárt jön."]]],
+ [/barista/, ["Presszó"], [["Dupla", "Mindent kétszer jelentett."]], [["Zabtej", "Felárért jelentett."]]],
+ [/ingatlan/, ["Kulcs"], [["Napfényes", "A pincelakást is napfényesnek jelentette."]], [["Jutalék", "Három százalékért bárkit bemutatott."]]],
+ [/tanácsad|consult/, ["Tanácsadó"], [["Dia", "Jelentés helyett negyven diát adott le."]], [["Framework", "Minden problémára rajzolt egy négyzetet, négy részre osztva."]]],
+ [/kutató|tudós|vegyész|biológus/, ["Kémcső"], [["Kísérlet", "Minden beszervezése csak kísérlet volt."]], [["Preprint", "Mindent kiszivárogtatott, mielőtt bárki ellenőrizte volna."]]],
+ [/(^|[^bp])író|regény/, ["Regény"], [["Fikció", "Jelentései olvasmányosak voltak. Igaz egyik sem."]], [["Fiók", "A legjobb jelentéseit a fióknak írta."]]],
+ [/költő/, ["Rím"], [["Szonett", "Tizennégy sorban jelentett. Senki nem értette."]], [["Ihlet", "Csak ihletre jelentett. Kétévente."]]],
+ [/pilóta|légiutas|steward/, ["Szárny"], [["Turbulencia", "Minden találkozó rázós volt. Előre szólt."]], [["Robotpilóta", "A jelentések többségét nem ő írta. Csak ott ült."]]],
+ [/gyógyszerész/, ["Pirula"], [["Mellékhatás", "Minden jelentésének volt mellékhatása."]], [["Generikus", "Mindenkiből olcsóbbat ajánlott."]]],
+ [/fogorvos|fogász/, ["Fúró"], [["Tömés", "A hiányokat mindig kitöltötte valamivel."]], [["Nem Fáj", "Mindig ezt mondta."]]],
+ [/hentes/, ["Kolbász"], [["Szelet", "Mindent szeletekben jelentett."]], [["Kicsivel", "Mindig kicsivel többet jelentett. Belefér?"]]],
+ [/rendező|filmes|operatőr/, ["Csapó"], [["Vágás", "A jelentés legjobb részét mindig kivágta."]], [["Folytatás", "Minden jelentése után jött egy második rész. Gyengébb."]]],
+ [/podcast/, ["Mikrofon"], [["Epizód", "Mindent folytatásokban jelentett."]], [["Intro", "A jelentésig sosem jutott el. Bevezetőnek jó volt."]]],
+ [/startup/, ["Ötlet"], [["Befektető", "Csak arról jelentett, akinek volt pénze."]], [["Unikornis", "Évek óta mondta, hogy majd az lesz."]]],
+ [/értékesít|sales|üzletkötő/, ["Kuncsaft"], [["Ajánlat", "Minden jelentés mellé adott egy ajánlatot."]], [["Follow-up", "Ha nem válaszoltak, másnap újra jelentett. Csak emlékeztetőül."]]],
+ [/asszisztens|titkár|recepció/, ["Jegyzet"], [["Továbbítva", "Mindent továbbított. Ez volt a munkája."]], [["Reply-All", "Egy jelentését egyszer mindenkinek elküldte. A célszemélynek is."]]],
+ [/kőműves|építőmunk|burkoló/, ["Malter"], [["Fal", "A falnak is füle volt. Ő volt az."]], [["Cigiszünet", "Három jelentés között négy szünet."]]],
+ [/lakberend|belsőépítész/, ["Párna"], [["Bézs", "Minden jelentése bézs volt."]], [["Monstera", "Minden lakásba tett egyet."]]],
+ [/fordító|tolmács/, ["Szótár"], [["Szabadon", "Mindent szabadon fordított. A jelentéseket is."]], [["Lost", "Valami mindig elveszett a fordításban. Általában a lényeg."]]],
+ [/közgazd|economist/, ["Infláció"], [["Előrejelzés", "Minden jelentése a jövőről szólt. Egyik sem jött be."]], [["Elvileg", "Elvileg mindent tudott."]]],
+ [/humorist|stand.?up|komikus/, ["Poén"], [["Csattanó", "A végére mindig tartogatott valamit. Senki nem várta meg."]], [["Nem Vicces", "A tartótiszt egyszer sem nevetett."]]],
+ [/postás|kézbesít/, ["Bélyeg"], [["Ajánlott", "Mindent ajánlva jelentett."]], [["Értesítő", "Soha nem találta otthon a célszemélyt. Cetlit hagyott."]]],
+ [/meteorol|időjár/, ["Felhő"], [["Front", "Mindig jött valami."]], [["Változó", "Jelentései nagyjából stimmeltek. Néha."]]],
+ [/rendezvény|event/, ["Lufi"], [["Vendéglista", "Mindenkit felírt. Ez volt a dolga."]], [["Csúszunk", "Minden találkozó húsz percet késett. Terv szerint."]]],
+ [/takarít/, ["Felmosó"], [["Szőnyeg", "Mindent látott, ami a szőnyeg alá került."]], [["Nyom", "Mindent eltüntetett. A bizonyítékokat is."]]],
+ [/kertész/, ["Gereblye"], [["Gyom", "Mindenkit kigyomlált, aki nem tetszett neki."]], [["Majd Kinő", "Minden problémára ugyanazt mondta."]]],
+ [/katona|honvéd/, ["Sapka"], [["Vigyázz", "Mindig vigyázzban jelentett. Ülve is."]], [["Pihenj", "A parancs második felét jobban szerette."]]],
+ [/sportoló|focista|úszó|atléta/, ["Érem"], [["Bemelegítés", "A jelentés előtt fél óráig nyújtott."]], [["Kispad", "A meccsek nagy részét onnan látta."]]],
+ [/blog/, ["Bejegyzés"], [["Archívum", "Mindent megtartott. Mindent."]], [["Életút", "A jelentés előtt elmesélte a nagymamája receptjét. Három oldalon."]]]
+];
+const HOBBIES=[
+ [/fut/, "Futó", ["Strava", "Ha nem volt fent Stravára, a megfigyelés meg sem történt."]],
+ [/síel|\bsí\b/, "Pálya", ["Hütte", "A pályán ritkán látták, a hüttében annál többször."]],
+ [/foci|futball/, "Les", ["Kapitány", "A kanapéról mindig jobban tudta."]],
+ [/horgász/, "Kapás", ["Ekkora", "Jelentései mindig nagyobbak voltak, mint a valóság."]],
+ [/olvas|könyv/, "Könyvmoly", ["Goodreads", "Több könyvet értékelt, mint amennyit elolvasott."]],
+ [/gam|videojáték|playstation|xbox|konzol/, "Konzol", ["Respawn", "Hiába bukott le, másnap újra ott volt."]],
+ [/rubik|kocka/, "Kocka", ["Kirakva", "A kockát negyven másodperc alatt kirakta. Egy jelentést soha."]],
+ [/bakelit|lemez|vinyl/, "Fordulat", ["Analóg", "Minden jelentés előtt elmagyarázta, miért szól jobban bakeliten."]],
+ [/kert/, "Kapa", ["Cukkini", "Augusztusban mindenkinek vitt. Akár kérte, akár nem."]],
+ [/főz/, "Kanál", ["Fogás", "Minden vacsoráját elmesélte. Fogásonként."]],
+ [/bor/, "Dugó", ["Lecsengés", "A kannás bort is jellemezte."]],
+ [/tea/, "Filter", ["Áztatás", "Addig nem kezdte el a találkozót, amíg le nem telt a három perc."]],
+ [/kávé/, "Zacc", ["Barista", "A presszóban kioktatta a pultost."]],
+ [/jóga/, "Szőnyeg", ["Namaszté", "Jelentés előtt mindig mély levegőt vett. Hangosan."]],
+ [/bicikl|bring|kerékpár/, "Pedál", ["Lycra", "A kávézóba is abban ment."]],
+ [/túr/, "Bakancs", ["Csúcs", "A hegyre csak a fotó miatt ment fel."]],
+ [/macsk/, "Cirmos", ["Konzerv", "A macska szervezte be, nem fordítva."]],
+ [/kutya/, "Póráz", ["Séta", "Napi háromszor ugyanaz az útvonal. Ideális megfigyelő."]],
+ [/sorozat|netflix|film/, "Évad", ["Spoiler", "Mindenkiről mindent elmondott. Előre."]],
+ [/fotó/, "Vaku", ["Napnyugta", "Csak naplementekor volt hajlandó megfigyelni."]],
+ [/zen/, "Hangjegy", ["Spotify", "Évente egyszer mindent elárult magáról. Önként."]],
+ [/sakk/, "Gyalog", ["Patt", "Jelentései után soha senki nem lépett semmit."]],
+ [/úsz/, "Tempó", ["Klór", "Mindig érezni lehetett rajta, hol járt."]],
+ [/tánc/, "Lépés", ["Ritmus", "Nem volt neki."]],
+ [/edz|gym|kondi|crossfit/, "Súlyzó", ["Lábnap", "Egyszer sem tartotta meg."]],
+ [/utaz/, "Bőrönd", ["Jetlag", "Mindig más időzónában volt, mint a tartótiszt."]],
+ [/kötés|horgol/, "Gombolyag", ["Szem", "Egyet sem ejtett el."]],
+ [/fesztivál|sziget|koncert/, "Karszalag", ["Sziget", "Egy hétig senki nem érte el."]],
+ [/társas|catan/, "Dobókocka", ["Szabálykönyv", "Minden kör előtt felolvasta."]],
+ [/karaoke/, "Mikrofon", ["Refrén", "A versszakokat soha nem tudta."]],
+ [/sör|kocsma|kraft/, "Korsó", ["IPA", "Minden sörről elmondta a véleményét. Senki nem kérte."]],
+ [/fest|rajzol|akvarell/, "Ecset", ["Absztrakt", "Senki nem tudta, mit ábrázol. A jelentései sem."]],
+ [/barkács|diy|szerel/, "Kalapács", ["Félkész", "A polc azóta is a földön van."]],
+ [/tenisz/, "Ütő", ["Sólyomszem", "Minden labdát visszanézetett."]],
+ [/padel/, "Padel", ["Trend", "Két éve még teniszezett."]],
+ [/podcast/, "Fülhallgató", ["Gyorsítva", "Mindent másfélszeres sebességgel hallgatott. A kihallgatást is."]],
+ [/kripto|bitcoin|crypto/, "Bitcoin", ["Holdra", "Mindig mondta, hogy most fog kilőni."]],
+ [/tiktok|insta|görget|reels/, "Hüvelykujj", ["Algoritmus", "Jobban ismerte őt, mint a szolgálat."]],
+ [/horoszkóp|asztrol|csillagjegy/, "Csillag", ["Merkúr", "Minden kudarcát a Merkúrra fogta."]],
+ [/puzzle|kirakó/, "Darab", ["Hiány", "Mindig egy darab hiányzott."]],
+ [/golf/, "Lyuk", ["Klubház", "A pályán ritkán látták."]],
+ [/mászás|mászik|boulder/, "Kötél", ["Magnézia", "Mindenhol nyomot hagyott."]],
+ [/road ?trip|autóz/, "Térkép", ["Benzinkút", "Minden kútnál megállt. Hot dogért."]]
+];
+const SURNAMES={"kovács": "Patkó", "szabó": "Cérna", "nagy": "Kicsi", "kis": "Óriás", "kiss": "Puszi", "molnár": "Liszt", "farkas": "Piroska", "varga": "Csizma", "papp": "Ámen", "pap": "Ámen", "takács": "Fonal", "juhász": "Bárány", "lakatos": "Kulcs", "mészáros": "Bárd", "simon": "Garfunkel", "fodor": "Göndör", "szűcs": "Bunda", "bodnár": "Hordó", "kocsis": "Ostor", "jakab": "Kalap", "hegedűs": "Vonó", "halász": "Háló", "erdős": "Tisztás", "fazekas": "Korong", "vörös": "Ketchup", "király": "Jobbágy", "nemes": "Paraszt", "bíró": "Ítélet", "pásztor": "Furulya", "jávor": "Szirup", "major": "Tanya", "vass": "Rozsda", "kertész": "Gyom", "fehér": "Hipó", "soós": "Perec", "sós": "Perec", "bárány": "Gyapjú", "szekeres": "Gyeplő", "katona": "Vigyázz", "sipos": "Fütty", "győri": "Keksz", "pintér": "Abroncs", "gulyás": "Bogrács", "rigó": "Csőr", "sas": "Galamb", "holló": "Varjú", "szántó": "Eke", "kerekes": "Defekt", "szalai": "Szalma", "mező": "Pitypang", "vadász": "Nyúl", "boros": "Fröccs", "tamás": "Hitetlen", "kántor": "Orgona", "rózsa": "Tövis", "virág": "Váza", "szőke": "Barna", "barna": "Szőke", "deák": "Puska", "magyar": "Hungarikum", "csizmadia": "Sarok", "kardos": "Toll", "lovas": "Gebe", "szép": "Csúnya", "vincze": "Szüret", "szilágyi": "Erzsébet", "lukács": "Fürdő", "bálint": "Valentin", "pál": "Fordulat", "illés": "Szekér", "veres": "Cékla", "budai": "Pesti", "somogyi": "Balaton", "fülöp": "Herceg", "jónás": "Cet", "ádám": "Éva", "dávid": "Parittya", "benedek": "Elek", "mátyás": "Igazságos", "bakos": "Kecske", "bognár": "Kerék", "fenyő": "Karácsony", "hollós": "Varjú", "darázs": "Fullánk", "méhes": "Zümm", "sólyom": "Veréb", "galambos": "Morzsa", "csonka": "Teljes", "bárdos": "Bárd", "szakács": "Kóstoló", "asztalos": "Gyalu", "kalmár": "Alku", "révész": "Csónak", "csizmár": "Talp", "vadas": "Áfonya", "gombos": "Lyuk", "szappanos": "Hab", "kalapos": "Kalap", "hajós": "Lék", "erdei": "Gomba", "hegyi": "Lejtő", "völgyi": "Csúcs", "mezei": "Pipacs", "medve": "Málna", "szarka": "Fényes", "pataki": "Csobogó", "nyári": "Strand", "téli": "Szánkó", "fényes": "Napszemüveg", "szilvási": "Gombóc", "almási": "Csutka", "diós": "Bejgli", "mákos": "Guba", "borsos": "Csípős", "mézes": "Csupor", "arany": "Toldi", "ezüst": "Második", "kemény": "Puha", "bátor": "Nyuszi", "gazdag": "Csóró", "szegedi": "Papucs", "pécsi": "Mecsek", "debreceni": "Kolbász", "egri": "Bikavér", "makai": "Hagyma", "kecskeméti": "Barack", "tokaji": "Aszú", "csóka": "Csillogó"};
+const UNITS=["III/III-K · Kreatívipari elhárítás", "III/II-Z · Zoom-hívások felderítése", "III/IV-L · Lépcsőházi megfigyelés", "III/III-F · Facebook-kommentek", "III/I-M · Családi Messenger-csoport", "III/III-T · Társasházi közgyűlések", "III/II-B · Brunch-elhárítás", "III/II-K · Kocsmai beszélgetések", "III/IV-SZ · Szülői értekezletek", "III/III-P · Plázai mozgások", "III/III-G · Grillpartik", "III/II-E · Esküvői asztaltársaságok"];
+const BASIS=["hazafias alapon", "hazafias alapon, de számlát kér", "kompromittáló anyag: 2009-es Facebook-albumok", "anyagi érdekeltség: két Túró Rudi", "lelkiismereti alapon (nem tudja megindokolni)", "önként jelentkezik, mert unatkozik", "kompromittáló anyag: régi blogbejegyzések", "anyagi érdekeltség: egy doboz Negro", "hazafias alapon, és mert megkérdezték", "kompromittáló anyag: keresési előzmények"];
+const NOTES=["Jelentéseit kizárólag hangüzenetben adja le.", "A találkozókra mindig késik, de hoz pogácsát.", "Konspirációs érzéke nulla. Mindenkinek elmondta.", "Minden jelentést úgy kezd: na szóval.", "Jelentései pontosak, csak senkit nem érdekelnek.", "Fénykép nélkül is felismerhető: ő az, aki a legtöbbet beszél.", "Azt hiszi, ő a kedvenc ügynökünk. Nem az.", "A fedőnevét maga választotta. Ez látszik is.", "Jelentéseit nagybetűvel írja. Mindig kiabál.", "A titkos találkozóra olyan pólóban jött, amin a fedőneve állt.", "Kétszer is visszakérdezett, hogy ez ugye titkos.", "Jelentései végén mindig kér egy lájkot.", "Megkérdezte, lehet-e home office-ból jelenteni.", "A tartótisztet is be akarta szervezni egy hálózati értékesítésbe.", "Minden jelentést úgy kezd: nem tudom, ez fontos-e, de.", "Jelentéseit csak PDF-ben hajlandó leadni.", "Fedőnevét kiírta a postaládára.", "Ha kérdezik, mindent tagad. Akkor is, ha nem kérdezik.", "Minden találkozón ugyanazt a viccet mondja el.", "A jelentések felét elfelejti. A másik felét kitalálja.", "Kéri, hogy a tartótiszt a fedőnevén szólítsa. Otthon is.", "Gyanúsan jól érzi magát.", "Minden jelentés után megkérdezi: na, milyen volt?", "Egyszer a saját magáról szóló jelentést is leadta. Véletlenül.", "Szigorúan titkos. Ezt mindenkinek el is mondja.", "A konspirációs lakásban átrendezte a bútorokat.", "Jelentéseihez mindig csatol egy szelfit.", "Hűséges, megbízható, és nagyon unja magát."];
+const PREC={
+  fafej:'Vágó István → „Quiz”, Paskai László → „Tanár”, Dévényi Tibor → „Déva”',
+  assoc:'Kenedi János → „Elnök” (mert hasonlított Kennedyre)',
+  roast:'Konrád Györgyöt „Elvakult” és „Mesterkedő” néven vezették',
+  redup:'Szikora Róbert → „Nanu-Nanu”'
+};
+
+function truncName(surname){
+  const s=norm(surname).replace(/[^a-záéíóöőúüű]/g,'');
+  if(!s) return null;
+  const V='aáeéiíoóöőuúüű';
+  let i=0; while(i<s.length && !V.includes(s[i])) i++;
+  if(i>=s.length) return cap(s)+'a';
+  let j=i+1;
+  const tri=['dzs'],di=['cs','dz','gy','ly','ny','sz','ty','zs'];
+  if(j>=s.length) return cap(s)+'ka';
+  if(V.includes(s[j])) return cap(s.slice(0,j+1))+'ka';
+  if(tri.includes(s.slice(j,j+3))) j+=3; else if(di.includes(s.slice(j,j+2))) j+=2; else j+=1;
+  let base=s.slice(0,j);
+  if(base===s) return cap(base)+'a';
+  return cap(base+'a');
+}
+
+function strategies(d,r){
+  const fun=[], dumb=[];
+  const job=norm(d.job), hob=norm(d.hobby);
+  const surRaw=(d.name.trim().split(/\s+/)[0]||''), sur=norm(surRaw);
+  if(job){
+    const hit=JOBS.find(([re])=>re.test(job));
+    if(hit){
+      for(const [n,w] of hit[3]) fun.push({key:'roast',name:n,label:'LIGHTOS ALÁZÁS',why:w});
+      for(const [n,w] of hit[2]) fun.push({key:'assoc',name:n,label:'SZELLEMESKEDÉS',why:w});
+      dumb.push({key:'fafej',name:pick(hit[1],r),label:'FAFEJŰ',why:`Foglalkozása: ${d.job.trim()}. A tartótiszt aznap korán akart hazamenni.`});
+    } else {
+      dumb.push({key:'fafej',name:cap(job.split(/\s+/).pop()),label:'FAFEJŰ',why:`Megkérdezték, mi a foglalkozása. Ennyi volt az ötletelés.`});
+      fun.push({key:'roast',name:'Valami Irodai',label:'LIGHTOS ALÁZÁS',why:'Senki nem tudta pontosan, mivel foglalkozik. Ő sem.'});
+    }
+  }
+  if(SURNAMES[sur]) fun.push({key:'assoc',name:SURNAMES[sur],label:'SZELLEMESKEDÉS',why:`A vezetékneve ${cap(sur)}. A tartótiszt egész délután ezen röhögött.`});
+  if(hob){
+    const hit=HOBBIES.find(([re])=>re.test(hob));
+    if(hit){
+      fun.push({key:'roast',name:hit[2][0],label:'LIGHTOS ALÁZÁS',why:hit[2][1]});
+      dumb.push({key:'fafej',name:hit[1],label:'FAFEJŰ',why:`Szabadidejében: ${d.hobby.trim()}. A környezettanulmány itt véget is ért.`});
+    } else {
+      dumb.push({key:'fafej',name:cap(hob.split(/[\s,]+/)[0]),label:'FAFEJŰ',why:'A környezettanulmányból kiderült, mit csinál hétvégén. Mélyebbre nem ástak.'});
+    }
+  }
+  const t=truncName(surRaw);
+  if(t) dumb.push({key:'fafej',name:t,label:'FAFEJŰ',why:'Levágták a vezetékneve végét, és odabiggyesztettek egy magánhangzót. Ennyi telt.'});
+  if(d.saying.trim()){
+    const w=cap(d.saying.trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,''));
+    if(w) fun.push({key:'redup',name:w+'-'+w,label:'REDUPLIKÁCIÓ',why:`Egyszer hallották tőle, hogy „${w.toLocaleLowerCase('hu-HU')}”. Kétszer leírták, és kész.`});
+  }
+  if(d.town.trim()){
+    let tw=cap(d.town.trim().split(/[\s,]/)[0]); if(!/i$/.test(tw)) tw+='i';
+    dumb.push({key:'fafej',name:tw,label:'FAFEJŰ',why:'Megkérdezték, honnan való. Utána már nem kérdeztek semmit.'});
+  }
+  // a vicces változatok jönnek előbb, seedelt sorrendben
+  const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  const list=shuffle(fun).concat(shuffle(dumb));
+  list.forEach(x=>x.prec=PREC[x.key]);
+  return list;
+}
+
+let state=null;
+const ART='https://claude.ai/artifact/A6KTZRpausMRJyBvAvu52S';
+const shareUrl=()=>window.claude?ART:(location.origin+location.pathname);
+let dlP=null;const getDl=()=>{if(!dlP&&window.claude&&window.claude.use)dlP=window.claude.use('downloads').catch(()=>null);return dlP||Promise.resolve(null)};setTimeout(getDl,0);
+function shareText(){const st=state.list[state.idx];return `Ha egyszer beszerveznének, már megvan a fedőnevem: „${st.name}”. ${st.why} Most még te is választhatsz:`}
+
+function wrap(ctx,text,x,y,maxW,lh){
+  const words=text.split(' ');let line='';let yy=y;
+  for(const w of words){const test=line?line+' '+w:w;if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line,x,yy);line=w;yy+=lh}else line=test}
+  if(line){ctx.fillText(line,x,yy);yy+=lh}
+  return yy;
+}
+
+function draw(){
+  const c=$('c'),ctx=c.getContext('2d'),W=1080,H=1350;
+  const s=state, r=rng(s.seed+s.idx*7919);
+  const st=s.list[s.idx];
+  // paper
+  ctx.fillStyle='#2a2723';ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.translate(W/2,H/2);ctx.rotate(-0.012);ctx.translate(-W/2,-H/2);
+  const g=ctx.createRadialGradient(W/2,H/2,200,W/2,H/2,900);g.addColorStop(0,'#f2e9d4');g.addColorStop(1,'#d9cba8');
+  ctx.fillStyle=g;ctx.fillRect(60,60,W-120,H-120);
+  // noise
+  const nr=rng(s.seed);
+  for(let i=0;i<9000;i++){ctx.fillStyle=`rgba(80,60,30,${nr()*0.07})`;ctx.fillRect(60+nr()*(W-120),60+nr()*(H-120),2,2)}
+  // stains
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.strokeStyle='rgba(120,85,40,.10)';ctx.lineWidth=10;ctx.arc(140+nr()*800,200+nr()*900,60+nr()*50,0,Math.PI*2);ctx.stroke()}
+  const ink='#1d1b18';ctx.fillStyle=ink;
+  const L=120,R=W-120;
+  ctx.font='26px "Courier Prime","Courier New",monospace';ctx.textAlign='left';
+  ctx.fillText('ÁLLAMBIZTONSÁGI FEDŐNÉV-HIVATAL',L,150);
+  ctx.textAlign='right';ctx.fillText('Nyt. sz.: 6-'+String(s.seed%900000+100000),R,150);
+  ctx.textAlign='left';
+  ctx.fillRect(L,170,R-L,3);
+  ctx.font='52px "Special Elite","Courier New",monospace';ctx.fillText('6-OS KARTON',L,250);
+  ctx.font='22px "Courier Prime","Courier New",monospace';ctx.fillStyle='#5a5244';ctx.fillText('*nem igazi',L+392,250);ctx.fillStyle=ink;
+
+  let y=320;
+  const field=(k,v)=>{ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText(k,L,y);ctx.font='27px "Special Elite","Courier New",monospace';y=wrap(ctx,v,L+250,y,R-L-250,35);ctx.strokeStyle='rgba(29,27,24,.35)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(L+250,y-30);ctx.lineTo(R,y-26);ctx.stroke();y+=16};
+  field('NÉV:',HU(s.d.name.trim()));
+  if(s.d.job.trim()) field('FOGLALKOZÁS:',s.d.job.trim());
+  const dt=new Date();field('LEFOGLALVA:',dt.getFullYear()+'. '+['jan.','febr.','márc.','ápr.','máj.','jún.','júl.','aug.','szept.','okt.','nov.','dec.'][dt.getMonth()]+' '+dt.getDate()+'.');
+  field('ALOSZTÁLY:',pick(UNITS,r));
+  field('VÁRHATÓ ALAP:',pick(BASIS,r));
+
+  // codename box
+  y+=6;
+  ctx.font='bold 26px "Courier Prime","Courier New",monospace';ctx.fillText('VÁLASZTOTT FEDŐNÉV:',L,y);
+  y+=30;
+  ctx.strokeStyle=ink;ctx.lineWidth=4;ctx.strokeRect(L,y,R-L,170);
+  let fs=100;const nm='„'+HU(st.name)+'”';
+  ctx.font=`${fs}px "Special Elite","Courier New",monospace`;
+  while(ctx.measureText(nm).width>R-L-60&&fs>40){fs-=4;ctx.font=`${fs}px "Special Elite","Courier New",monospace`}
+  ctx.textAlign='center';ctx.fillText(nm,W/2,y+85+fs*0.33);ctx.textAlign='left';
+  y+=215;
+  ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText('MÓDSZER: '+st.label,L,y);y+=40;
+  ctx.font='26px "Courier Prime","Courier New",monospace';y=wrap(ctx,st.why,L,y,R-L,34);
+  y+=12;
+  ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText('TARTÓTISZTI MEGJEGYZÉS:',L,y);y+=40;
+  ctx.font='italic 25px "Special Elite","Courier New",monospace';y=wrap(ctx,pick(NOTES,r),L,y,R-L,33);
+
+  // stamp
+  ctx.save();ctx.translate(W-250,250);ctx.rotate(-0.18);ctx.scale(.8,.8);
+  ctx.strokeStyle='rgba(179,38,30,.82)';ctx.fillStyle='rgba(179,38,30,.82)';ctx.lineWidth=7;
+  ctx.strokeRect(-190,-70,380,140);ctx.lineWidth=2;ctx.strokeRect(-178,-58,356,116);
+  ctx.textAlign='center';ctx.font='bold 34px "Courier Prime","Courier New",monospace';ctx.fillText('FEDŐNÉV',0,-10);ctx.fillText('LEFOGLALVA',0,34);
+  ctx.restore();
+
+  // footer
+  ctx.fillStyle=ink;ctx.fillRect(L,H-190,R-L,3);
+  ctx.font='22px "Courier Prime","Courier New",monospace';ctx.fillStyle='#4a4337';
+  ctx.fillText('PARÓDIA · Kitalált karton, nem valós nyilvántartás.',L,H-150);
+  ctx.fillText('Ha egyszer beszerveznek, már tudod, mit mondj.',L,H-118);
+  // Lucky Bastard szignó (Playfair 900, sentence case, bastard. italic, 0.16em)
+  {const fs=26,sp=fs*0.16,parts=[['You lucky ','900 '],['bastard.','italic 900 ']];
+   const ff=fs+'px "Playfair Display",Georgia,serif';let w=0;
+   for(const [t,st] of parts){ctx.font=st+ff;for(const ch of t)w+=ctx.measureText(ch).width+sp}
+   w-=sp;let x=R-w;const yy=H-80;ctx.fillStyle='#1A1A18';ctx.textAlign='left';
+   for(const [t,st] of parts){ctx.font=st+ff;for(const ch of t){ctx.fillText(ch,x,yy);x+=ctx.measureText(ch).width+sp}}}
+  ctx.restore();
+
+  $('cardImg').src=c.toDataURL('image/png');
+  $('method').innerHTML='<b>Módszer: '+st.label+'</b><br>Valódi precedens: '+st.prec;
+  $('chips').innerHTML=s.list.map((x,i)=>'<button type="button" data-i="'+i+'" class="'+(i===s.idx?'on':'')+'">„'+x.name+'”</button>').join('');
+
+  $('copyMsg').textContent='';
+}
+
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const d={name:$('name').value,job:$('job').value,hobby:$('hobby').value,saying:$('saying').value,town:$('town').value,habit:$('habit').value};
+  if(d.name.trim().split(/\s+/).length<2){$('err').textContent='Teljes nevet kérünk, elvtárs.';return}
+  if(!$('self').checked){$('err').textContent='Csak saját magadat szervezheted be. Pipáld be a négyzetet.';return}
+  $('err').textContent='';
+  try{await Promise.all([document.fonts.load('52px "Special Elite"'),document.fonts.load('26px "Courier Prime"'),document.fonts.load('bold 26px "Courier Prime"'),document.fonts.load('900 26px "Playfair Display"'),document.fonts.load('italic 900 26px "Playfair Display"')])}catch(_){}
+  const seed=hash(norm(d.name)+'|'+norm(d.job));
+  const r=rng(seed);
+  const list=strategies(d,r);
+  state={d,seed,list,idx:0};
+  draw();
+  $('out').style.display='block';$('sharebar').style.display='block';
+  $('out').scrollIntoView({behavior:'smooth'});
+});
+
+$('chips').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!state)return;state.idx=+b.dataset.i;draw()});
+$('share').addEventListener('click',async()=>{
+  if(!state)return;
+  const msg=$('copyMsg');msg.textContent='';
+  const blob=await new Promise(res=>$('c').toBlob(res,'image/png'));
+  const fn='fedonev-'+norm(state.list[state.idx].name).replace(/[^a-z0-9áéíóöőúüű]+/g,'-')+'.png';
+  // 1) natív megosztás (saját domainen, mobilon)
+  try{
+    const file=new File([blob],fn,{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],text:shareText()+' '+shareUrl()});return;
+    }
+  }catch(err){if(err&&err.name==='AbortError')return}
+  // 2) Claude app (artifact-nézet)
+  const dl=await getDl();
+  if(dl){try{await dl.save({filename:fn,data:blob});return}catch(err){if(err&&err.code==='declined')return}}
+  msg.textContent='Itt nem nyílik meg a megosztás. Nyomd hosszan a képet, és mentsd el.';
+});
+})();
+</script>
+</body>
+</html>
