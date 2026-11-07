@@ -102,7 +102,7 @@
   <div id="out">
     <img id="cardImg" alt="Fedőnév-karton">
     <div class="method" id="method"></div>
-    <p class="pickhead">Válassz egyet, amíg még lehet:</p>
+    <p class="pickhead">Nem tetszik? Válassz egyet, amíg még lehet:</p>
     <div class="chips" id="chips"></div>
     <label class="ownlbl" for="own">Saját nevet választok</label>
     <div class="ownrow"><input type="text" id="own" maxlength="20" placeholder="pl. Kobra, Rambo, Princess, Optimus" enterkeyhint="done"><button type="button" id="ownBtn">Ez lesz</button></div>
@@ -191,13 +191,13 @@ const JOBS=[
  [/blog/, ["Bejegyzés"], [["Archívum", "Mindent megtartott. Mindent."]], [["Életút", "A jelentés előtt elmesélte a nagymamája receptjét. Három oldalon."]]]
 ];
 const HOBBIES=[
- [/fut/, "Futó", ["Strava", "Ha nem volt fent Stravára, a megfigyelés meg sem történt."]],
+ [/fut/, "Rajtszám", ["Strava", "Ha nem volt fent Stravára, a megfigyelés meg sem történt."]],
  [/síel|\bsí\b/, "Pálya", ["Hütte", "A pályán ritkán látták, a hüttében annál többször."]],
  [/foci|futball/, "Les", ["Kapitány", "A kanapéról mindig jobban tudta."]],
  [/horgász/, "Kapás", ["Ekkora", "Jelentései mindig nagyobbak voltak, mint a valóság."]],
- [/olvas|könyv/, "Könyvmoly", ["Goodreads", "Több könyvet értékelt, mint amennyit elolvasott."]],
- [/gam|videojáték|playstation|xbox|konzol/, "Konzol", ["Respawn", "Hiába bukott le, másnap újra ott volt."]],
- [/rubik|kocka/, "Kocka", ["Kirakva", "A kockát negyven másodperc alatt kirakta. Egy jelentést soha."]],
+ [/olvas|könyv/, "Szamárfül", ["Goodreads", "Több könyvet értékelt, mint amennyit elolvasott."]],
+ [/gam|videojáték|playstation|xbox|konzol/, "Szint", ["Respawn", "Hiába bukott le, másnap újra ott volt."]],
+ [/rubik|kocka/, "Ernő", ["Kirakva", "A kockát negyven másodperc alatt kirakta. Egy jelentést soha."]],
  [/bakelit|lemez|vinyl/, "Fordulat", ["Analóg", "Minden jelentés előtt elmagyarázta, miért szól jobban bakeliten."]],
  [/kert/, "Kapa", ["Cukkini", "Augusztusban mindenkinek vitt. Akár kérte, akár nem."]],
  [/főz/, "Kanál", ["Fogás", "Minden vacsoráját elmesélte. Fogásonként."]],
@@ -225,9 +225,9 @@ const HOBBIES=[
  [/fest|rajzol|akvarell/, "Ecset", ["Absztrakt", "Senki nem tudta, mit ábrázol. A jelentései sem."]],
  [/barkács|diy|szerel/, "Kalapács", ["Félkész", "A polc azóta is a földön van."]],
  [/tenisz/, "Ütő", ["Sólyomszem", "Minden labdát visszanézetett."]],
- [/padel/, "Padel", ["Trend", "Két éve még teniszezett."]],
+ [/padel/, "Kalitka", ["Trend", "Két éve még teniszezett."]],
  [/podcast/, "Fülhallgató", ["Gyorsítva", "Mindent másfélszeres sebességgel hallgatott. A kihallgatást is."]],
- [/kripto|bitcoin|crypto/, "Bitcoin", ["Holdra", "Mindig mondta, hogy most fog kilőni."]],
+ [/kripto|bitcoin|crypto/, "Tárca", ["Holdra", "Mindig mondta, hogy most fog kilőni."]],
  [/tiktok|insta|görget|reels/, "Hüvelykujj", ["Algoritmus", "Jobban ismerte őt, mint a szolgálat."]],
  [/horoszkóp|asztrol|csillagjegy/, "Csillag", ["Merkúr", "Minden kudarcát a Merkúrra fogta."]],
  [/puzzle|kirakó/, "Darab", ["Hiány", "Mindig egy darab hiányzott."]],
@@ -271,21 +271,19 @@ function strategies(d,r){
     const hit=JOBS.find(([re])=>re.test(job));
     if(hit){
       for(const [n,w] of hit[3]) fun.push({key:'roast',name:n,label:'LIGHTOS ALÁZÁS',why:w});
-      for(const [n,w] of hit[2]) fun.push({key:'assoc',name:n,label:'SZELLEMESKEDÉS',why:w});
+      for(const [n,w] of hit[2]) fun.push({key:'assoc',name:n,label:'ERŐLTETETT SZELLEMESKEDÉS',why:w});
       dumb.push({key:'fafej',name:pick(hit[1],r),label:'FAFEJŰ',why:`Foglalkozása: ${d.job.trim()}. A tartótiszt aznap korán akart hazamenni.`});
     } else {
       dumb.push({key:'fafej',name:cap(job.split(/\s+/).pop()),label:'FAFEJŰ',why:`Megkérdezték, mi a foglalkozása. Ennyi volt az ötletelés.`});
       fun.push({key:'roast',name:'Valami Irodai',label:'LIGHTOS ALÁZÁS',why:'Senki nem tudta pontosan, mivel foglalkozik. Ő sem.'});
     }
   }
-  if(SURNAMES[sur]) fun.push({key:'assoc',name:SURNAMES[sur],label:'SZELLEMESKEDÉS',why:`A vezetékneve ${cap(sur)}. A tartótiszt egész délután ezen röhögött.`});
+  if(SURNAMES[sur]) fun.push({key:'assoc',name:SURNAMES[sur],label:'ERŐLTETETT SZELLEMESKEDÉS',why:`A vezetékneve ${cap(sur)}. A tartótiszt egész délután ezen röhögött.`});
   if(hob){
     const hit=HOBBIES.find(([re])=>re.test(hob));
     if(hit){
       fun.push({key:'roast',name:hit[2][0],label:'LIGHTOS ALÁZÁS',why:hit[2][1]});
       dumb.push({key:'fafej',name:hit[1],label:'FAFEJŰ',why:`Szabadidejében: ${d.hobby.trim()}. A környezettanulmány itt véget is ért.`});
-    } else {
-      dumb.push({key:'fafej',name:cap(hob.split(/[\s,]+/)[0]),label:'FAFEJŰ',why:'A környezettanulmányból kiderült, mit csinál hétvégén. Mélyebbre nem ástak.'});
     }
   }
   const t=truncName(surRaw);
@@ -360,7 +358,7 @@ function draw(){
   while(ctx.measureText(nm).width>R-L-60&&fs>40){fs-=4;ctx.font=`${fs}px "Special Elite","Courier New",monospace`}
   ctx.textAlign='center';ctx.fillText(nm,W/2,y+85+fs*0.33);ctx.textAlign='left';
   y+=215;
-  ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText('MÓDSZER: '+st.label,L,y);y+=40;
+  ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText('A NÉVADÁS MÓDJA: '+st.label,L,y);y+=40;
   ctx.font='26px "Courier Prime","Courier New",monospace';y=wrap(ctx,st.why,L,y,R-L,34);
   y+=12;
   ctx.font='bold 24px "Courier Prime","Courier New",monospace';ctx.fillText('TARTÓTISZTI MEGJEGYZÉS:',L,y);y+=40;
@@ -376,8 +374,7 @@ function draw(){
   // footer
   ctx.fillStyle=ink;ctx.fillRect(L,H-190,R-L,3);
   ctx.font='22px "Courier Prime","Courier New",monospace';ctx.fillStyle='#4a4337';
-  ctx.fillText('PARÓDIA · Kitalált karton, nem valós nyilvántartás.',L,H-150);
-  ctx.fillText('Ha egyszer beszerveznek, már tudod, mit mondj.',L,H-118);
+  ctx.fillText('Ha egyszer beszerveznek, már tudod, mit mondj.',L,H-140);
   // Lucky Bastard szignó (Playfair 900, sentence case, bastard. italic, 0.16em)
   {const fs=26,sp=fs*0.16,parts=[['You lucky ','900 '],['bastard.','italic 900 ']];
    const ff=fs+'px "Playfair Display",Georgia,serif';let w=0;
@@ -387,7 +384,7 @@ function draw(){
   ctx.restore();
 
   $('cardImg').src=c.toDataURL('image/png');
-  $('method').innerHTML='<b>Módszer: '+st.label+'</b><br>Valódi precedens: '+st.prec;
+  $('method').innerHTML='<b>Valódi precedens:</b> '+st.prec;
   $('chips').innerHTML=s.list.map((x,i)=>'<button type="button" data-i="'+i+'" class="'+(i===s.idx?'on':'')+'">„'+x.name+'”</button>').join('');
 
   $('copyMsg').textContent='';
