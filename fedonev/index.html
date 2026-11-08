@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Ügynöknek lenni ciki. Legalább a fedőneved ne legyen az.">
-<meta property="og:title" content="Ügynöknek lenni ciki. Legalább a fedőneved ne legyen az.">
+<meta name="description" content="Besúgónak lenni ciki. Legalább a fedőneved ne legyen az.">
+<meta property="og:title" content="Besúgónak lenni ciki. Legalább a fedőneved ne legyen az.">
 <meta property="og:description" content="Vágó „Quiz” lett, Szikora „Nanu-Nanu”. Nekik nem volt beleszólásuk. Neked most még van.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://luckybastard.hu/fedonev/">
-<meta property="og:image" content="https://luckybastard.hu/fedonev/og.png?v=2">
+<meta property="og:image" content="https://luckybastard.hu/fedonev/og.png?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="hu_HU">
@@ -20,8 +20,11 @@
   :root{--paper:#efe6d2;--ink:#1d1b18;--red:#b3261e;--muted:#6b6355}
   *{box-sizing:border-box}
   body{margin:0;background:#2a2723;color:var(--ink);font-family:'Courier Prime',monospace;min-height:100vh}
+  html,body{overflow-x:hidden}
   .wrap{max-width:480px;margin:0 auto;padding:10px 16px 48px}
-  .hero{position:relative;height:100vh;height:100svh;margin:-10px -16px 0;overflow:hidden;background:#15171c}
+  .hero{position:relative;height:100vh;height:100svh;width:100vw;margin:-10px 0 0 calc(50% - 50vw);overflow:hidden;background:#15171c}
+  .hero.wide .scene{-webkit-mask-image:linear-gradient(to right,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(to right,transparent,#000 22%,#000 78%,transparent)}
+  .hero.wide .herotxt{max-width:520px;margin:0 auto}
   .scene{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:0 0}
   .scene .bg,.figimg{position:absolute;left:0;top:0;width:768px;height:1376px;image-rendering:pixelated;-webkit-user-select:none;user-select:none;pointer-events:none}
   .figwrap{position:absolute;left:0;top:0;width:768px;height:1376px;transform-origin:384px 1017px;transition:transform .45s ease}
@@ -85,7 +88,7 @@
       <img class="bg" src="bg.webp" alt="">
       <div class="glow"></div>
       <div class="figwrap" id="figwrap">
-        <img class="figimg" src="fig.webp" alt="Síró ügynök egy táblával">
+        <img class="figimg" src="fig.webp" alt="Síró besúgó egy táblával">
         <div id="tag"></div>
         <div id="tears"></div>
       </div>
@@ -93,8 +96,8 @@
       <div class="crt"></div>
     </div>
     <div class="herotxt">
-      <h1><b class="h1a">Ügynöknek lenni ciki.</b> <span>Legalább a fedőneved<br>ne legyen az.</span></h1>
-      <p class="lead">Vágó „Quiz” István, Szikora „Nanu-Nanu” Róbert… Nekik nem volt beleszólásuk. Neked most még van.</p>
+      <h1><b class="h1a">Besúgónak lenni ciki.</b> <span>Legalább a fedőneved<br>ne legyen az.</span></h1>
+      <p class="lead">Vágó „Quiz” István, Szikora „Nanu-Nanu” Róbert…<br>Nekik nem volt beleszólásuk. Neked most még van.</p>
       <button type="button" class="cta" id="cta">Kérem a fedőnevem</button>
     </div>
   </div>
@@ -256,7 +259,7 @@ const HOBBIES=[
 const SURNAMES={"kovács": "Patkó", "szabó": "Cérna", "nagy": "Kicsi", "kis": "Óriás", "kiss": "Puszi", "molnár": "Liszt", "farkas": "Piroska", "varga": "Csizma", "papp": "Ámen", "pap": "Ámen", "takács": "Fonal", "juhász": "Bárány", "lakatos": "Kulcs", "mészáros": "Bárd", "simon": "Garfunkel", "fodor": "Göndör", "szűcs": "Bunda", "bodnár": "Hordó", "kocsis": "Ostor", "jakab": "Kalap", "hegedűs": "Vonó", "halász": "Háló", "erdős": "Tisztás", "fazekas": "Korong", "vörös": "Ketchup", "király": "Jobbágy", "nemes": "Paraszt", "bíró": "Ítélet", "pásztor": "Furulya", "jávor": "Szirup", "major": "Tanya", "vass": "Rozsda", "kertész": "Gyom", "fehér": "Hipó", "soós": "Perec", "sós": "Perec", "bárány": "Gyapjú", "szekeres": "Gyeplő", "katona": "Vigyázz", "sipos": "Fütty", "győri": "Keksz", "pintér": "Abroncs", "gulyás": "Bogrács", "rigó": "Csőr", "sas": "Galamb", "holló": "Varjú", "szántó": "Eke", "kerekes": "Defekt", "szalai": "Szalma", "mező": "Pitypang", "vadász": "Nyúl", "boros": "Fröccs", "tamás": "Hitetlen", "kántor": "Orgona", "rózsa": "Tövis", "virág": "Váza", "szőke": "Barna", "barna": "Szőke", "deák": "Puska", "magyar": "Hungarikum", "csizmadia": "Sarok", "kardos": "Toll", "lovas": "Gebe", "szép": "Csúnya", "vincze": "Szüret", "szilágyi": "Erzsébet", "lukács": "Fürdő", "bálint": "Valentin", "pál": "Fordulat", "illés": "Szekér", "veres": "Cékla", "budai": "Pesti", "somogyi": "Balaton", "fülöp": "Herceg", "jónás": "Cet", "ádám": "Éva", "dávid": "Parittya", "benedek": "Elek", "mátyás": "Igazságos", "bakos": "Kecske", "bognár": "Kerék", "fenyő": "Karácsony", "hollós": "Varjú", "darázs": "Fullánk", "méhes": "Zümm", "sólyom": "Veréb", "galambos": "Morzsa", "csonka": "Teljes", "bárdos": "Bárd", "szakács": "Kóstoló", "asztalos": "Gyalu", "kalmár": "Alku", "révész": "Csónak", "csizmár": "Talp", "vadas": "Áfonya", "gombos": "Lyuk", "szappanos": "Hab", "kalapos": "Kalap", "hajós": "Lék", "erdei": "Gomba", "hegyi": "Lejtő", "völgyi": "Csúcs", "mezei": "Pipacs", "medve": "Málna", "szarka": "Fényes", "pataki": "Csobogó", "nyári": "Strand", "téli": "Szánkó", "fényes": "Napszemüveg", "szilvási": "Gombóc", "almási": "Csutka", "diós": "Bejgli", "mákos": "Guba", "borsos": "Csípős", "mézes": "Csupor", "arany": "Toldi", "ezüst": "Második", "kemény": "Puha", "bátor": "Nyuszi", "gazdag": "Csóró", "szegedi": "Papucs", "pécsi": "Mecsek", "debreceni": "Kolbász", "egri": "Bikavér", "makai": "Hagyma", "kecskeméti": "Barack", "tokaji": "Aszú", "csóka": "Csillogó"};
 const UNITS=["III/III-K · Kreatívipari elhárítás", "III/II-Z · Zoom-hívások felderítése", "III/IV-L · Lépcsőházi megfigyelés", "III/III-F · Facebook-kommentek", "III/I-M · Családi Messenger-csoport", "III/III-T · Társasházi közgyűlések", "III/II-B · Brunch-elhárítás", "III/II-K · Kocsmai beszélgetések", "III/IV-SZ · Szülői értekezletek", "III/III-P · Plázai mozgások", "III/III-G · Grillpartik", "III/II-E · Esküvői asztaltársaságok"];
 const BASIS=["hazafias alapon", "hazafias alapon, de számlát kér", "kompromittáló anyag: 2009-es Facebook-albumok", "anyagi érdekeltség: két Túró Rudi", "lelkiismereti alapon (nem tudja megindokolni)", "önként jelentkezik, mert unatkozik", "kompromittáló anyag: régi blogbejegyzések", "anyagi érdekeltség: egy doboz Negro", "hazafias alapon, és mert megkérdezték", "kompromittáló anyag: keresési előzmények"];
-const NOTES=["Jelentéseit kizárólag hangüzenetben adja le.", "A találkozókra mindig késik, de hoz pogácsát.", "Konspirációs érzéke nulla. Mindenkinek elmondta.", "Minden jelentést úgy kezd: na szóval.", "Jelentései pontosak, csak senkit nem érdekelnek.", "Fénykép nélkül is felismerhető: ő az, aki a legtöbbet beszél.", "Azt hiszi, ő a kedvenc ügynökünk. Nem az.", "A fedőnevét maga választotta. Ez látszik is.", "Jelentéseit nagybetűvel írja. Mindig kiabál.", "A titkos találkozóra olyan pólóban jött, amin a fedőneve állt.", "Kétszer is visszakérdezett, hogy ez ugye titkos.", "Jelentései végén mindig kér egy lájkot.", "Megkérdezte, lehet-e home office-ból jelenteni.", "A tartótisztet is be akarta szervezni egy hálózati értékesítésbe.", "Minden jelentést úgy kezd: nem tudom, ez fontos-e, de.", "Jelentéseit csak PDF-ben hajlandó leadni.", "Fedőnevét kiírta a postaládára.", "Ha kérdezik, mindent tagad. Akkor is, ha nem kérdezik.", "Minden találkozón ugyanazt a viccet mondja el.", "A jelentések felét elfelejti. A másik felét kitalálja.", "Kéri, hogy a tartótiszt a fedőnevén szólítsa. Otthon is.", "Gyanúsan jól érzi magát.", "Minden jelentés után megkérdezi: na, milyen volt?", "Egyszer a saját magáról szóló jelentést is leadta. Véletlenül.", "Szigorúan titkos. Ezt mindenkinek el is mondja.", "A konspirációs lakásban átrendezte a bútorokat.", "Jelentéseihez mindig csatol egy szelfit.", "Hűséges, megbízható, és nagyon unja magát."];
+const NOTES=["Jelentéseit kizárólag hangüzenetben adja le.", "A találkozókra mindig késik, de hoz pogácsát.", "Konspirációs érzéke nulla. Mindenkinek elmondta.", "Minden jelentést úgy kezd: na szóval.", "Jelentései pontosak, csak senkit nem érdekelnek.", "Fénykép nélkül is felismerhető: ő az, aki a legtöbbet beszél.", "Azt hiszi, ő a kedvenc besúgónk. Nem az.", "A fedőnevét maga választotta. Ez látszik is.", "Jelentéseit nagybetűvel írja. Mindig kiabál.", "A titkos találkozóra olyan pólóban jött, amin a fedőneve állt.", "Kétszer is visszakérdezett, hogy ez ugye titkos.", "Jelentései végén mindig kér egy lájkot.", "Megkérdezte, lehet-e home office-ból jelenteni.", "A tartótisztet is be akarta szervezni egy hálózati értékesítésbe.", "Minden jelentést úgy kezd: nem tudom, ez fontos-e, de.", "Jelentéseit csak PDF-ben hajlandó leadni.", "Fedőnevét kiírta a postaládára.", "Ha kérdezik, mindent tagad. Akkor is, ha nem kérdezik.", "Minden találkozón ugyanazt a viccet mondja el.", "A jelentések felét elfelejti. A másik felét kitalálja.", "Kéri, hogy a tartótiszt a fedőnevén szólítsa. Otthon is.", "Gyanúsan jól érzi magát.", "Minden jelentés után megkérdezi: na, milyen volt?", "Egyszer a saját magáról szóló jelentést is leadta. Véletlenül.", "Szigorúan titkos. Ezt mindenkinek el is mondja.", "A konspirációs lakásban átrendezte a bútorokat.", "Jelentéseihez mindig csatol egy szelfit.", "Hűséges, megbízható, és nagyon unja magát."];
 const PREC={
   fafej:'Vágó István → „Quiz”, Paskai László → „Tanár”, Dévényi Tibor → „Déva”',
   assoc:'Kenedi János → „Elnök” (mert hasonlított Kennedyre)',
@@ -453,7 +456,7 @@ $('share').addEventListener('click',async()=>{
 (function(){
  const hero=$('hero'),sc=$('scene'),fw=$('figwrap'),tag=$('tag'),tears=$('tears'),rc=$('rain');if(!sc)return;
  const W=768,H=1376,FEET=1017,HAT=188;let S=1;
- function fit(){const w=hero.clientWidth,h=hero.clientHeight;S=Math.max(w/W,h/H);
+ function fit(){const w=hero.clientWidth,h=hero.clientHeight,wide=w/h>W/H;hero.classList.toggle('wide',wide);S=wide?h/H:Math.max(w/W,h/H);
   const txt=hero.querySelector('.herotxt').offsetHeight+18;let top=Math.min(0,(h-txt)-FEET*S);top=Math.max(top,-(HAT*S-16));
   sc.style.transform=`translate(${(w-W*S)/2}px,${top}px) scale(${S})`}
  fit();addEventListener('resize',fit);document.fonts&&document.fonts.ready.then(fit);
