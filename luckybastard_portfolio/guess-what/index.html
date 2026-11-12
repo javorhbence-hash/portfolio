@@ -10,14 +10,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://luckybastard.hu/guess-what/">
 <meta property="og:title" content="Guess what the client was thinking">
-<meta property="og:description" content="12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.">
+<meta property="og:description" content="Néha a rutin segít, néha az emberismeret, sokszor pedig a mázli. Ha egyben kimaxolod, és még gyors is voltál: vendégem vagy a kedvenc anaerób jaktejes lattédra.">
 <meta property="og:image" content="https://luckybastard.hu/guess-what/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="hu_HU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Guess what the client was thinking">
-<meta name="twitter:description" content="12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.">
+<meta name="twitter:description" content="Néha a rutin segít, néha az emberismeret, sokszor pedig a mázli. Ha egyben kimaxolod, és még gyors is voltál: vendégem vagy a kedvenc anaerób jaktejes lattédra.">
 <meta name="twitter:image" content="https://luckybastard.hu/guess-what/assets/og.png">
 <link rel="icon" href="assets/favicon.png">
 
@@ -138,6 +138,21 @@ body.dark .btn.ghost:hover{background:var(--cream);color:var(--ink);}
   max-height:min(56svh,608px);
   width:auto;height:auto;
 }
+/* A gondolatbuborék külön rétegen lebeg. A hero-base.png-ből ki van
+   retusálva, a hero-bubble.png pontosan a helyére ül (px-ben: 330,71
+   a 700x1254-es képen). Ha cseréled a rajzot, ezt a kettőt együtt. */
+.hero-stage{position:relative;display:inline-block;}
+.hero .bubble{
+  position:absolute;left:47.1429%;top:5.6619%;width:45.8571%;
+  max-width:none;max-height:none;height:auto;
+  animation:bubbleFloat 4.8s ease-in-out infinite;
+  will-change:transform;pointer-events:none;
+}
+@keyframes bubbleFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4%)}
+}
+@media (prefers-reduced-motion:reduce){.hero .bubble{animation:none}}
 .hero .placeholder{
   border:1px dashed rgba(26,26,24,.22);
   width:min(340px,56svh*0.558);aspect-ratio:700/1254;margin:0 auto;
@@ -214,6 +229,14 @@ body.dark .leaf.on{color:#8FC565;}
 .counter{
   text-align:center;font-size:11px;letter-spacing:.24em;text-indent:.24em;
   text-transform:uppercase;opacity:.4;margin-bottom:var(--s1);
+}
+/* stopper a számláló mellett. tabular-nums: ne ugráljon a szélessége */
+.counter .clock{font-variant-numeric:tabular-nums;}
+.counter .clock::before{content:'·';margin:0 .9em;}
+.wintime{
+  font-family:var(--font-brand);font-weight:900;
+  font-size:clamp(28px,8vw,40px);font-variant-numeric:tabular-nums;
+  color:var(--accent-lift);margin-bottom:var(--s3);
 }
 
 /* ================= KÉRDÉS =================
@@ -361,14 +384,17 @@ body.dark .opt .let{color:var(--accent-lift);}
   </div>
 
   <div class="hero">
-    <img src="assets/hero.png" alt="Fabábu ügyfél, feje fölött gondolatbuborékban céltábla, körülötte a falba fúródott nyilak"
-         onerror="this.remove();document.getElementById('heroPh').style.display='flex';">
+    <div class="hero-stage">
+      <img src="assets/hero-base.png" alt="Fabábu ügyfél, feje fölött gondolatbuborékban céltábla, körülötte a falba fúródott nyilak"
+           onerror="this.parentNode.remove();document.getElementById('heroPh').style.display='flex';">
+      <img class="bubble" src="assets/hero-bubble.png" alt="" aria-hidden="true">
+    </div>
     <div class="placeholder" id="heroPh" style="display:none">hero illusztráció<br>assets/hero.png</div>
   </div>
 
   <div class="intro">
     <p class="ask">Vajon mire gondolt az ügyfél?</p>
-    <p>Örök kérdés. Néha a rutin segít, néha az emberismeret, sokszor pedig a mázli. 12 kérdés, 36 opció. Akár bármelyik jó lehetne, de most csak az egyik az. Tedd próbára magad! Ha egyben kimaxolod, és még mázlid is van: meghívlak egy ebédre.</p>
+    <p>Örök kérdés. Néha a rutin segít, néha az emberismeret, sokszor pedig a mázli. Tedd próbára magad! Ha egyben kimaxolod, és még gyors is voltál: vendégem vagy a kedvenc anaerób jaktejes lattédra.</p>
   </div>
 
   <button class="btn" id="startBtn">Kezdjük</button>
@@ -376,7 +402,7 @@ body.dark .opt .let{color:var(--accent-lift);}
 
 <!-- ============ 2. JÁTÉK ============ -->
 <section class="screen" id="s-game">
-  <div class="counter" id="counter">1 / 12</div>
+  <div class="counter"><span id="counter">1 / 12</span><span class="clock" id="clock">0:00</span></div>
   <div class="clovers" id="clovers"></div>
   <p class="quote" id="quote"></p>
   <div class="options" id="options"></div>
@@ -395,7 +421,7 @@ body.dark .opt .let{color:var(--accent-lift);}
     <p class="evalline d5" id="failEval"></p>
     <button class="btn" id="retryBtn">Újra elölről</button>
     <button class="btn ghost" id="contBtn">Tovább innen</button>
-    <p class="rule">Innen már csak a poénokért. Az ebéd a hibátlan futamé.</p>
+    <p class="rule">Innen már csak a poénokért. A latte a hibátlan futamé.</p>
   </div>
 </section>
 
@@ -404,13 +430,13 @@ body.dark .opt .let{color:var(--accent-lift);}
   <!-- HIBÁTLAN FUTAM - jár a jelentkezés -->
   <div class="verdict" id="winClean">
     <p class="big stag">12 / 12</p>
+    <p class="wintime stag" id="winTime"></p>
     <div class="reveal" style="text-align:center">
       <p class="stag" style="font-size:17px;margin-bottom:var(--s2);">Egyetlen hiba nélkül. Vagy tényleg ismered az ügyfeleket, vagy nagyon szerencsés vagy.</p>
       <p class="stag" style="font-size:17px;color:var(--accent-lift);">Mindkettő jó hír.</p>
     </div>
-    <p class="evalline d5">A jelentkezők közül egyet kisorsolok.<br>Hogy mikor, azt még én sem tudom.</p>
     <a class="btn" id="claimBtn"
-       href="mailto:javor.h.bence@gmail.com?subject=Guess%20what%20-%2012%2F12&body=Megvan%20mind%20a%20tizenkett%C5%91%2C%20egy%20szuszra.%0A%0A">Jelentkezem az ebédre</a>
+       href="mailto:javor.h.bence@gmail.com?subject=Guess%20what%20-%2012%2F12&body=Megvan%20mind%20a%20tizenkett%C5%91%2C%20egy%20szuszra.%0A%0A">Kérem a kávém</a>
     <button class="btn ghost" id="againBtn">Még egyszer</button>
   </div>
 
@@ -421,7 +447,7 @@ body.dark .opt .let{color:var(--accent-lift);}
       <p class="stag" style="font-size:17px;margin-bottom:var(--s2);">Megvan mind a tizenkettő. De nem egy szuszra.</p>
       <p class="stag" style="font-size:17px;color:var(--accent-lift);">Most már tudod a válaszokat. Az nem ugyanaz, mint tudni az ügyfelet.</p>
     </div>
-    <p class="evalline d5">Az ebédre az jelentkezhet, aki egyetlen hiba nélkül megy végig.</p>
+    <p class="evalline d5">A lattéra az jelentkezhet, aki egyetlen hiba nélkül megy végig.</p>
     <button class="btn" id="cleanBtn">Nekifutok tisztán</button>
   </div>
 </section>
@@ -522,7 +548,7 @@ const EVAL = [
   /*  6 */ "Pont a fele. És melyik felében bíztál jobban?",
   /*  7 */ "Hét. Kezdesz gyanúsan jól olvasni a sorok között.",
   /*  8 */ "Nyolc. Ezt már nem lehet mázlira fogni. Vagy mégis?",
-  /*  9 */ "Kilenc. Ennyivel már pitchet nyertek. Ebédet még nem.",
+  /*  9 */ "Kilenc. Ennyivel már pitchet nyertek. Lattét még nem.",
   /* 10 */ "Igazi ügyfélsuttogó, vagy a szerencse fia vagy?",
   /* 11 */ "Na jó. Valld be, hogy te is ügyfél vagy."
 ];
@@ -544,6 +570,17 @@ let idx = 0, busy = false;
    vagy a "Tovább innen" hamisra állítja. Minden futam a saját jogán számít,
    ezért nem kell semmit tárolni - és nincs becsületalap sem. */
 let clean = true;
+
+/* STOPPER - a "Kezdjük"-től a 12. helyes válaszig méri a futamot.
+   Csak a hibátlan futam ideje számít; bukásnál megáll. Az idő a
+   levél tárgyába és törzsébe is bekerül, így a sorsolásnál látszik. */
+let t0 = 0, tick = null, finalMs = 0;
+const fmt = ms => { const t = Math.floor(ms/100), m = Math.floor(t/600),
+  sec = Math.floor(t/10)%60; return m+':'+String(sec).padStart(2,'0')+','+(t%10); };
+function clockStart(){ t0 = performance.now(); clockStop();
+  tick = setInterval(()=>{ $('clock').textContent = fmt(performance.now()-t0).slice(0,-2); }, 250);
+  $('clock').textContent = '0:00'; }
+function clockStop(){ if(tick){ clearInterval(tick); tick = null; } return performance.now()-t0; }
 const $ = id => document.getElementById(id);
 const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
@@ -627,7 +664,9 @@ function answer(i, card){
     track('gw_pass',{q:idx+1});
     idx++;
     if(idx >= Q.length){
-      track('gw_win',{clean:clean?1:0});
+      finalMs = clockStop();
+      track('gw_win',{clean:clean?1:0, sec:Math.round(finalMs/1000)});
+      if(clean) setClaim(finalMs);
       $('winClean').style.display = clean ? '' : 'none';
       $('winDirty').style.display = clean ? 'none' : '';
       setTimeout(glowAll, 420);
@@ -638,7 +677,8 @@ function answer(i, card){
   } else {
     /* egy ütem, mielőtt jön a reveal - a rossz kártya megjelöli magát */
     card.classList.add('miss');
-    clean = false;              /* ez a futam már nem ér ebédet */
+    clean = false;              /* ez a futam már nem ér lattét */
+    clockStop();
     track('gw_fail',{q:idx+1});
     $('failSaid').innerHTML    = '<span class="qm">„</span>'+esc(q.said)+'<span class="qm">”</span>';
     $('failMeant').textContent = q.opts[q.correct];
@@ -647,12 +687,14 @@ function answer(i, card){
   }
 }
 
-/* tiszta lappal: ez a futam még érhet ebédet */
+/* tiszta lappal: ez a futam még érhet lattét */
 function start(){
   idx = 0; busy = false; clean = true;
   buildClovers();
   render();
   show('s-game');
+  $('clock').style.display = '';
+  clockStart();
   track('gw_start');
 }
 
@@ -660,6 +702,7 @@ function start(){
    elveszíti a jogosultságát - a poénokért játszik tovább */
 function cont(){
   idx++; busy = false; clean = false;
+  $('clock').style.display = 'none';   /* a poénfutamnak nincs ideje */
   track('gw_continue',{q:idx});
   if(idx >= Q.length){
     $('winClean').style.display = 'none';
@@ -671,6 +714,16 @@ function cont(){
   show('s-game');
 }
 
+/* a nyertes idő a képernyőre és a levélbe */
+function setClaim(ms){
+  const t = fmt(ms);
+  $('winTime').textContent = t;
+  const subj = 'Guess what - 12/12 - '+t;
+  const body = 'Megvan mind a tizenkettő, egy szuszra. Időm: '+t+'\n\n';
+  $('claimBtn').href = 'mailto:javor.h.bence@gmail.com?subject='+encodeURIComponent(subj)
+    +'&body='+encodeURIComponent(body);
+}
+
 /* ============================================================
    ANALYTICS
    Egy helyen kezeli a Plausible-t és a GA4-et. Amelyik be van
@@ -679,7 +732,7 @@ function cont(){
    gw_start  - elindult a játék
    gw_pass   - helyes válasz  {q: kérdés sorszáma}
    gw_fail   - bukás          {q: hányadiknál esett ki}
-   gw_win    - mind a 12 megvan
+   gw_win    - mind a 12 megvan  {clean, sec: futamidő mp-ben}
    gw_claim  - rákattintott az "Írok" gombra
    ============================================================ */
 function track(name, props){

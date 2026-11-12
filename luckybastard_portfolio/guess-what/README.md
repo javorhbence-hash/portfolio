@@ -10,7 +10,9 @@ Egyfájlos HTML játék. Nincs backend, nincs adatgyűjtés, nincs build lépés
 guess-what/
   index.html          ← minden itt van
   assets/
-    hero.png          ← Gemini hero illusztráció (a "B" verzió)
+    hero.png          ← az eredeti, egyben (már nem töltődik be, referencia)
+    hero-base.png     ← a rajz, kiretusált buborékkal
+    hero-bubble.png   ← a gondolatbuborék a céltáblával, külön rétegen lebeg
     leaf.png          ← egy lóherelevél, átlátszó háttér (opcionális)
     og.png            ← LinkedIn preview kép, 1200×630
 ```
@@ -72,7 +74,7 @@ sincs bekötve, csendben elmegy - nem hibázik.
 | `gw_pass` | helyes válasz | `q` = kérdés sorszáma |
 | `gw_fail` | bukás | `q` = hányadiknál esett ki |
 | `gw_continue` | "Tovább innen"-t választott | `q` = melyik kérdésnél |
-| `gw_win` | mind a 12 megvan | `clean` = 1 ha hibátlan futam volt |
+| `gw_win` | mind a 12 megvan | `clean` = 1 ha hibátlan futam volt, `sec` = futamidő |
 | `gw_claim` | jelentkezett az ebédre | - |
 
 **Amit ezekből ki tudsz olvasni:** hol esnek ki a legtöbben (melyik kérdés túl
@@ -107,7 +109,11 @@ Nincs verseny, nincs időmérő, nincs becsületalap és nincs tárolt állapot.
 2. A `clean` flag bármelyik hibánál és a "Tovább innen"-nél hamisra vált
 3. Csak a `clean === true` futam végén jelenik meg a jelentkező gomb
 4. Minden futam a saját jogán számít - nincs localStorage, nincs sütizés
-5. A jelentkezők közül Bence sorsol egyet
+5. Stopper fut a "Kezdjük"-től a 12. helyes válaszig; bukásnál megáll
+6. A hibátlan futam ideje a nyerőképernyőn és a levél tárgyában is megjelenik (pl. `Guess what - 12/12 - 1:47,3`)
+7. A hibátlan futamot teljesítők jelentkezhetnek a lattéra
+
+Az időt a játékos elvben átírhatja a levélben - ez becsületalapon marad.
 
 A záróképernyőnek két állapota van: `#winClean` (jár a jelentkezés) és
 `#winDirty` (visszahívó: "Nekifutok tisztán").
@@ -133,8 +139,8 @@ változatlan marad.
 - [x] `assets/hero.png` - a jóváhagyott B verzió (kibontva a Design bundle-ből)
 - [x] Claude Designban vizuális finomhangolás (visszaportolva)
 - [ ] `assets/leaf.png` - a lóherelevél, nyél az alsó közepén
-- [ ] `assets/og.png` - 1200×630 LinkedIn preview
-- [ ] `assets/favicon.png`
+- [x] `assets/og.png` - 1200×630 LinkedIn preview
+- [x] `assets/favicon.png`
 - [ ] analytics kód bekötése
 - [ ] a mailto cím ellenőrzése (most: `javor.h.bence@gmail.com`)
 
