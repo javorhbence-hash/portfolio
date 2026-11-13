@@ -145,12 +145,12 @@ body.dark .btn.ghost:hover{background:var(--cream);color:var(--ink);}
 .hero .bubble{
   position:absolute;left:47.1429%;top:5.6619%;width:45.8571%;
   max-width:none;max-height:none;height:auto;
-  animation:bubbleFloat 4.8s ease-in-out infinite;
+  animation:bubbleFloat 3.6s ease-in-out infinite;
   will-change:transform;pointer-events:none;
 }
 @keyframes bubbleFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-4%)}
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-11%) rotate(-1.2deg)}
 }
 @media (prefers-reduced-motion:reduce){.hero .bubble{animation:none}}
 .hero .placeholder{
